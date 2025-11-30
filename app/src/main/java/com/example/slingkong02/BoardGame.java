@@ -14,11 +14,14 @@ public class BoardGame extends View {
 
     private Ball b;
     private Paint p;
+    private Handler animationHandler;
     private Paint p2;
     private float dx;
     private float dy;
+    private boolean F;
     private float startX, startY;
-    private Handler animationHandler = new Handler();
+    private Thread thread;
+
     private final long frameRate = 30; // Milliseconds per frame
 
    /* private Runnable animationRunnable = new Runnable() {
@@ -47,7 +50,7 @@ public class BoardGame extends View {
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
-        canvas.drawCircle(b.GetX(), b.GetY(), 100, p2);
+        canvas.drawCircle(1000, 1000, 100, p2);
 
 
 
@@ -60,6 +63,8 @@ public class BoardGame extends View {
             case MotionEvent.ACTION_DOWN:
                 if(b.didusertouch(event.getX(), event.getY()))
                 {
+                    F=true;
+
                     startX = b.GetX();
                     startY = b.GetY();  // TODO: 26/11/2025 add user touch to blue ball 
                 }
@@ -82,8 +87,42 @@ public class BoardGame extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 // You could use dx and dy here to launch the ball
+                //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
+                F=false;
+                ThreadGame threadGame = new ThreadGame();
+                threadGame.start(); //starts the thread
+                animationHandler=new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull android.os.Message msg) {
+                        b.move();
+                        invalidate();
+                        return true;
+                    }
+                });
+
+
+
+
+
                 break;
         }
         return true;
     }
+    private class ThreadGame extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            while (true)
+            {
+                try {
+                    sleep(40);
+                    if(F==false)
+                        animationHandler.sendEmptyMessage(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
+
