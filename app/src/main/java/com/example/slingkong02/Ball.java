@@ -3,15 +3,14 @@ package com.example.slingkong02;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public class Ball {
-    private float x, y;
+public class Ball extends Base{
+    //private float x, y;
     private float dx, dy;
     private float radius;
     private Paint paint;
 
     public Ball(float x, float y, float dx, float dy, float radius, Paint paint) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
         this.dx = dx;
         this.dy = dy;
         this.radius = radius;
@@ -41,6 +40,10 @@ public class Ball {
     public void setDx(float dx) {
         this.dx = dx;
     }
+    public void setDy(float dy) {
+        this.dy = dy;
+    }
+
     public void setNewLocation(float x, float y) {
         this.x = x;
         this.y = y;

@@ -37,7 +37,7 @@ public class BoardGame extends View {
         super(context);
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(500, 1000, 10, 10, 50, p);
+        b = new Ball(500, 1000, 10, -10, 50, p);
         p2 = new Paint();
         //animationHandler.postDelayed(animationRunnable, frameRate);
     }
@@ -66,7 +66,7 @@ public class BoardGame extends View {
                     F=true;
 
                     startX = b.GetX();
-                    startY = b.GetY();  // TODO: 26/11/2025 add user touch to blue ball 
+                    startY = b.GetY();
                 }
              //   startX = b.GetX();
                 //startY = b.GetY();
@@ -75,7 +75,11 @@ public class BoardGame extends View {
                 float touchX = event.getX();
                 float touchY = event.getY();
                 dx = touchX - startX;
+                //if(dx)
+                //dx=Math.abs(dx);
                 dy = touchY - startY;
+                b.setDx(-dx/15);
+                b.setDy(-dy/15);
                 
 
                 if(dx<=150&&dy<=150) //&touchY>startY
