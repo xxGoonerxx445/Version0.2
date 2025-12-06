@@ -13,7 +13,7 @@ public class Hook extends Base{
 
     }
     public float GetPostionY() {
-        return this.y;
+        return this.y; //
     }
 
     @Override
