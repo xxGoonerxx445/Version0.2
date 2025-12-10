@@ -1,9 +1,12 @@
 package com.example.slingkong02;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +17,8 @@ public class BoardGame extends View {
 
     private Ball b;
     private Paint p;
+    private float viewWidth, viewHeight;
+
     private Handler animationHandler;
     private Paint p2;
     private float dx;
@@ -21,6 +26,9 @@ public class BoardGame extends View {
     private boolean F;
     private float startX, startY;
     private Thread thread;
+    private Hook h;
+    private Bitmap BackGround;
+    private Rect destRect;
 
     private final long frameRate = 30; // Milliseconds per frame
 
@@ -39,14 +47,31 @@ public class BoardGame extends View {
         p.setColor(Color.BLUE);
         b = new Ball(500, 1000, 10, -10, 50, p);
         p2 = new Paint();
+        h=new Hook(b.getX(),b.getY()-300,50,p2);
+        BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
+
+        //animationHandler = new Handler()
+
         //animationHandler.postDelayed(animationRunnable, frameRate);
+    }
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        viewWidth = w;
+        viewHeight = h;
+        destRect = new Rect(0, 0, w, h);
     }
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.WHITE);
+        if (destRect != null) {
+            canvas.drawBitmap(BackGround, null, destRect, null);
+        } else {
+            canvas.drawBitmap(BackGround, 0, 0, null);
+        }
         b.draw(canvas);
+        h.draw(canvas);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
@@ -100,6 +125,12 @@ public class BoardGame extends View {
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
                         invalidate();
+
+                        if(h.Collision(b.GetX(),b.GetY()))
+                        {
+                            b.setNewLocation(h.GetPostionX(),h.GetPostionY());
+                            F=true;
+                        }
                         return true;
                     }
                 });
@@ -119,7 +150,7 @@ public class BoardGame extends View {
             while (true)
             {
                 try {
-                    sleep(40);
+                    sleep(16);
                     if(F==false)
                         animationHandler.sendEmptyMessage(0);
                 } catch (InterruptedException e) {
@@ -129,4 +160,3 @@ public class BoardGame extends View {
         }
     }
 }
-
