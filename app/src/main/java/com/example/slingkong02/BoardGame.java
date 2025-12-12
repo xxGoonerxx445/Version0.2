@@ -6,10 +6,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowMetrics;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -29,8 +34,9 @@ public class BoardGame extends View {
     private Hook h;
     private Bitmap BackGround;
     private Rect destRect;
+    private int width,height;
 
-    private final long frameRate = 30; // Milliseconds per frame
+
 
    /* private Runnable animationRunnable = new Runnable() {
         @Override
@@ -49,6 +55,19 @@ public class BoardGame extends View {
         p2 = new Paint();
         h=new Hook(b.getX(),b.getY()-300,50,p2);
         BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
+        DisplayMetrics ds = getResources().getDisplayMetrics();
+        width=ds.widthPixels;
+        height=ds.heightPixels;
+
+
+        Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
 
         //animationHandler = new Handler()
 
@@ -92,6 +111,7 @@ public class BoardGame extends View {
 
                     startX = b.GetX();
                     startY = b.GetY();
+
                 }
              //   startX = b.GetX();
                 //startY = b.GetY();
@@ -100,8 +120,6 @@ public class BoardGame extends View {
                 float touchX = event.getX();
                 float touchY = event.getY();
                 dx = touchX - startX;
-                //if(dx)
-                //dx=Math.abs(dx);
                 dy = touchY - startY;
                 b.setDx(-dx/15);
                 b.setDy(-dy/15);
@@ -131,6 +149,13 @@ public class BoardGame extends View {
                             b.setNewLocation(h.GetPostionX(),h.GetPostionY());
                             F=true;
                         }
+                        b.TouchedEdge(width,height);
+//                        if(b.TouchedEdge(width,height))
+//                        {
+//                            Toast.makeText(getContext(), "touched edge", Toast.LENGTH_SHORT).show();
+//
+//                        }
+
                         return true;
                     }
                 });

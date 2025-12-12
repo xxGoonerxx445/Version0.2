@@ -54,4 +54,23 @@ public class Ball extends Base{
         return true;
 
     }
+    public void TouchedEdge(float screenWidth, float screenHeight) //checks if edeges of the screen where touched, if true than changes to the opposite dx/dy
+    {
+
+        if(this.x+this.radius<=0 ||this.x+this.radius>=screenWidth)
+       {
+            this.dx=-this.dx;
+       }
+
+        if(this.y+this.radius>=screenHeight||this.y+this.radius<=0)
+        {
+            this.dy=-this.dy;
+        }
+
+
+
+
+    }
+
 }
+
