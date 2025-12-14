@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -25,6 +26,7 @@ public class BoardGame extends View {
     private float viewWidth, viewHeight;
 
     private Handler animationHandler;
+    private Handler loweringspeed;
     private Paint p2;
     private float dx;
     private float dy;
@@ -137,6 +139,8 @@ public class BoardGame extends View {
                 //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
                 F=false;
                 ThreadGame threadGame = new ThreadGame();
+                ThreadGame t2=new ThreadGame();
+                t2.start();
                 threadGame.start(); //starts the thread
                 animationHandler=new Handler(new Handler.Callback() {
                     @Override
@@ -150,11 +154,21 @@ public class BoardGame extends View {
                             F=true;
                         }
                         b.TouchedEdge(width,height);
-//                        if(b.TouchedEdge(width,height))
-//                        {
-//                            Toast.makeText(getContext(), "touched edge", Toast.LENGTH_SHORT).show();
-//
-//                        }
+
+                        return true;
+                    }
+                });
+
+
+                loweringspeed = new Handler(new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message msg) {
+
+                        b.LowerSpeed();
+                        invalidate();
+
+
+                        //להוסיף את מה שמוריד מהירות
 
                         return true;
                     }
@@ -164,10 +178,21 @@ public class BoardGame extends View {
 
 
 
+
+
                 break;
         }
         return true;
     }
+
+
+
+
+
+
+
+
+
     private class ThreadGame extends Thread{
         @Override
         public void run() {
@@ -183,5 +208,6 @@ public class BoardGame extends View {
                 }
             }
         }
+
     }
 }

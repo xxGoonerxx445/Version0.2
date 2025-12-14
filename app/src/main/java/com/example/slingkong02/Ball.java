@@ -68,6 +68,19 @@ public class Ball extends Base{
         }
 
 
+    }
+    public void LowerSpeed()
+    {
+//        if(this.dx>0)
+//            this.dx=this.dx+10f;
+//        else
+//            this.dx=this.dx-10f;
+        if(this.dy>0&&this.dy!=0)
+            this.dy-=100f;
+        if(this.dy<0&&this.dy!=0)
+            this.dy+=100f;
+
+
 
 
     }
