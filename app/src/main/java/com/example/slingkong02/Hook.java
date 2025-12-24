@@ -6,6 +6,7 @@ import android.graphics.Paint;
 public class Hook extends Base{
     private float radius;
     private Paint paint;
+    // TODO: 24/12/2025 add isActive to disable hook after you moved the ball to launch 
 
 
 
@@ -30,8 +31,12 @@ public class Hook extends Base{
     }
     public boolean Collision(float x,float y)
     {
-        if(x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius)
+        if(isActive && x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius)
+        {
+            isActive = false;
             return true;
+        }
+            
         return false;
 
     }

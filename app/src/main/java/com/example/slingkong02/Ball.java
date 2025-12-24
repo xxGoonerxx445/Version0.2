@@ -3,6 +3,8 @@ package com.example.slingkong02;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+// TODO: 24/12/2025 fix velocity 
+// TODO: 24/12/2025 add ActiveCollison to check if ball is hooked-disable when you try to launch ball
 public class Ball extends Base{
     //private float x, y;
     private float dx, dy;
