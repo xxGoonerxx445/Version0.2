@@ -17,6 +17,7 @@ public class Ball extends Base{
         this.dy = dy;
         this.radius = radius;
         this.paint = paint;
+        //
 
     }
     public void draw(Canvas canvas)
