@@ -86,6 +86,8 @@ public class Ball extends Base{
 
 
     }
+    public void IsHooked()
+    {}
 
 }
 

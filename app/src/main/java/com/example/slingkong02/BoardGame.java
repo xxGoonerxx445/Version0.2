@@ -34,6 +34,8 @@ public class BoardGame extends View {
     private float startX, startY;
     private Thread thread;
     private Hook h;
+    private Hook h2;
+
     private Bitmap BackGround;
     private Rect destRect;
     private int width,height;
@@ -56,6 +58,8 @@ public class BoardGame extends View {
         b = new Ball(500, 1000, 10, -10, 50, p);
         p2 = new Paint();
         h=new Hook(b.getX(),b.getY()-300,50,p2);
+        h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
+
         BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width=ds.widthPixels;
@@ -93,6 +97,7 @@ public class BoardGame extends View {
         }
         b.draw(canvas);
         h.draw(canvas);
+        h2.draw(canvas);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
@@ -131,6 +136,8 @@ public class BoardGame extends View {
                 {
                     b.setNewLocation(touchX, touchY);
                 }
+                h.Activate(b);
+                h2.Activate(b);
 
                 invalidate();
                 break;
@@ -139,19 +146,23 @@ public class BoardGame extends View {
                 //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
                 F=false;
                 ThreadGame threadGame = new ThreadGame();
-                ThreadGame t2=new ThreadGame();
-                t2.start();
+                //ThreadGame t2=new ThreadGame();
+                //t2.start();
                 threadGame.start(); //starts the thread
                 animationHandler=new Handler(new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
+                        h.Activate(b);
+                        h2.Activate(b);
                         invalidate();
 
                         if(h.Collision(b.GetX(),b.GetY()))
                         {
                             b.setNewLocation(h.GetPostionX(),h.GetPostionY());
-                            F=true;
+                            b.setDx(0); // Stop movement
+                            b.setDy(0);
+                            F = true; // Stop the thread from calling move()
                         }
                         b.TouchedEdge(width,height);
 
