@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+
 public class BoardGame extends View {
 
     private Ball b;
@@ -59,6 +61,14 @@ public class BoardGame extends View {
         p2 = new Paint();
         h=new Hook(b.getX(),b.getY()-300,50,p2);
         h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
+        GameMoule GM=new GameMoule(new ArrayList<Hook>());
+        GM.AddHook(h);
+        GM.AddHook(h2);
+
+
+
+
+
 
         BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
         DisplayMetrics ds = getResources().getDisplayMetrics();
@@ -120,8 +130,7 @@ public class BoardGame extends View {
                     startY = b.GetY();
 
                 }
-             //   startX = b.GetX();
-                //startY = b.GetY();
+
                 break;
             case MotionEvent.ACTION_MOVE:
                 float touchX = event.getX();
@@ -136,14 +145,16 @@ public class BoardGame extends View {
                 {
                     b.setNewLocation(touchX, touchY);
                 }
-                h.Activate(b);
-                h2.Activate(b);
+              //h.Activate(b);
+              //h2.Activate(b);
 
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 // You could use dx and dy here to launch the ball
                 //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
+
+
                 F=false;
                 ThreadGame threadGame = new ThreadGame();
                 //ThreadGame t2=new ThreadGame();
@@ -153,10 +164,7 @@ public class BoardGame extends View {
                     @Override
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
-                        h.Activate(b);
-                        h2.Activate(b);
                         invalidate();
-
                         if(h.Collision(b.GetX(),b.GetY()))
                         {
                             b.setNewLocation(h.GetPostionX(),h.GetPostionY());

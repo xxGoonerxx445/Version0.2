@@ -35,13 +35,18 @@ public class Hook extends Base{
     {
         if(Active && x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius)
         {
-            Active=false;
+            this.Active=false;
             return true;
         }
             
         return false;
 
     }
+    public boolean GetMode()
+    {
+        return Active;
+    }
+
 
 
 //   public void Activate(Ball ball)
@@ -59,7 +64,7 @@ public class Hook extends Base{
 //       }
 //   }
 
-    public void Activate(Ball ball) {
+   /* public void Activate(Ball ball) {
         if (!this.Active) {
             float ballX = ball.GetX();
             float ballY = ball.GetY();
@@ -70,5 +75,5 @@ public class Hook extends Base{
                 this.Active = true;
             }
         }
-    }
+    }*/
 }
