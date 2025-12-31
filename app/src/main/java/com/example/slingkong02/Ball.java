@@ -9,6 +9,8 @@ public class Ball extends Base{
     //private float x, y;
     private float dx, dy;
     private float radius;
+    private boolean hooked = false;
+
     private Paint paint;
 
     public Ball(float x, float y, float dx, float dy, float radius, Paint paint) {
@@ -18,6 +20,12 @@ public class Ball extends Base{
         this.radius = radius;
         this.paint = paint;
 
+    }
+    public boolean isHooked() {
+        return hooked;
+    }
+    public void setHooked(boolean hooked) {
+        this.hooked = hooked;
     }
     public void draw(Canvas canvas)
     {

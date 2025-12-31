@@ -7,7 +7,7 @@ public class Hook extends Base{
     private float radius;
     private Paint paint;
     private Boolean Active;
-    // TODO: 24/12/2025 add isActive to disable hook after you moved the ball to launch 
+    // TODO: 24/12/2025 add isActive to disable hook after you moved the ball to launch(not sure)
 
 
 
@@ -33,6 +33,7 @@ public class Hook extends Base{
     }
     public boolean Collision(float x,float y)
     {
+        if(!Active) return false;
         if(Active && x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius)
         {
             this.Active=false;
@@ -46,34 +47,18 @@ public class Hook extends Base{
     {
         return Active;
     }
+    public void Activate()
+    {this.Active=true;}
+    public boolean isHooking(Ball b)
+    {
+        if(this.x==b.GetX()&&this.y==b.getY())
+            return true;
+        return false;
+    }
 
 
 
-//   public void Activate(Ball ball)
-//   {
-//       // Check if the hook is currently inactive
-//       if (!this.Active) {
-//           float ballX = ball.GetX();
-//           float ballY = ball.GetY();
-//
-//           // Reactivate if the ball is outside the bounding box of the hook
-//           if (ballX < this.x - radius || ballX > this.x + radius ||
-//                   ballY < this.y - radius || ballY > this.y + radius) {
-//               this.Active = true;
-//           }
-//       }
-//   }
 
-   /* public void Activate(Ball ball) {
-        if (!this.Active) {
-            float ballX = ball.GetX();
-            float ballY = ball.GetY();
-            float distSq = (ballX - x) * (ballX - x) + (ballY - y) * (ballY - y);
 
-            // If ball is further than the radius, reactivate the hook
-            if (distSq > radius * radius) {
-                this.Active = true;
-            }
-        }
-    }*/
+
 }

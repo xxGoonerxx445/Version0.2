@@ -37,6 +37,7 @@ public class BoardGame extends View {
     private Thread thread;
     private Hook h;
     private Hook h2;
+    private GameMoule GM;
 
     private Bitmap BackGround;
     private Rect destRect;
@@ -59,11 +60,15 @@ public class BoardGame extends View {
         p.setColor(Color.BLUE);
         b = new Ball(500, 1000, 10, -10, 50, p);
         p2 = new Paint();
-        h=new Hook(b.getX(),b.getY()-300,50,p2);
-        h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
-        GameMoule GM=new GameMoule(new ArrayList<Hook>());
-        GM.AddHook(h);
-        GM.AddHook(h2);
+        //h=new Hook(b.getX(),b.getY()-300,50,p2);
+        //h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
+        GM=new GameMoule(new ArrayList<Hook>());
+        GM.initDefaultHooks(p2);
+
+
+
+        //GM.AddHook(h);
+       // GM.AddHook(h2);
 
 
 
@@ -106,12 +111,14 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
-        h.draw(canvas);
-        h2.draw(canvas);
+        //h.draw(canvas);
+        //h2.draw(canvas);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
-        canvas.drawCircle(1000, 1000, 100, p2);
+        //GM.initDefaultHooks(p2);
+        GM.DrawHooks(canvas);
+        //canvas.drawCircle(1000, 1000, 100, p2);
 
 
 
@@ -124,8 +131,8 @@ public class BoardGame extends View {
             case MotionEvent.ACTION_DOWN:
                 if(b.didusertouch(event.getX(), event.getY()))
                 {
+                    b.setHooked(false);   //  release from hook
                     F=true;
-
                     startX = b.GetX();
                     startY = b.GetY();
 
@@ -157,6 +164,7 @@ public class BoardGame extends View {
 
                 F=false;
                 ThreadGame threadGame = new ThreadGame();
+                GM.ReActivate(b);
                 //ThreadGame t2=new ThreadGame();
                 //t2.start();
                 threadGame.start(); //starts the thread
@@ -165,13 +173,20 @@ public class BoardGame extends View {
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
                         invalidate();
-                        if(h.Collision(b.GetX(),b.GetY()))
+                        // TODO: 31/12/2025 check with every hook in array is there is a collsion
+
+                        if(GM.isCollide(b))
+                        {
+                            F=true;  // Stop the thread from calling move()
+                        }
+
+                        /*if(h.Collision(b.GetX(),b.GetY())) //this is an early test with 1 hook.
                         {
                             b.setNewLocation(h.GetPostionX(),h.GetPostionY());
                             b.setDx(0); // Stop movement
                             b.setDy(0);
                             F = true; // Stop the thread from calling move()
-                        }
+                        }*/
                         b.TouchedEdge(width,height);
 
                         return true;
