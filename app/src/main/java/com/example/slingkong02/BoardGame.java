@@ -56,9 +56,13 @@ public class BoardGame extends View {
 
     public BoardGame(Context context) {
         super(context);
+        BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
+        DisplayMetrics ds = getResources().getDisplayMetrics();
+        width=ds.widthPixels;
+        height=ds.heightPixels;
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(500, 1000, 10, -10, 50, p);
+        b = new Ball(width/2, height-200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy 
         p2 = new Paint();
         //h=new Hook(b.getX(),b.getY()-300,50,p2);
         //h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
@@ -75,10 +79,7 @@ public class BoardGame extends View {
 
 
 
-        BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
-        DisplayMetrics ds = getResources().getDisplayMetrics();
-        width=ds.widthPixels;
-        height=ds.heightPixels;
+
 
 
         Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
@@ -111,14 +112,10 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
-        //h.draw(canvas);
-        //h2.draw(canvas);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
-        //GM.initDefaultHooks(p2);
         GM.DrawHooks(canvas);
-        //canvas.drawCircle(1000, 1000, 100, p2);
 
 
 
@@ -142,18 +139,17 @@ public class BoardGame extends View {
             case MotionEvent.ACTION_MOVE:
                 float touchX = event.getX();
                 float touchY = event.getY();
-                dx = touchX - startX;
-                dy = touchY - startY;
-                b.setDx(-dx/15);
-                b.setDy(-dy/15);
+                dx = (touchX - startX)/10;
+                dy = (touchY - startY)/10; // TODO: 04/01/2026 fix velocity 
+                b.setDx(dx);
+                b.setDy(dy);
                 
-
-                if(dx<=150&&dy<=150) //&touchY>startY
+                
+                if((dx*dx)+(dy*dy)<150*150)
                 {
                     b.setNewLocation(touchX, touchY);
                 }
-              //h.Activate(b);
-              //h2.Activate(b);
+              
 
                 invalidate();
                 break;
@@ -207,10 +203,6 @@ public class BoardGame extends View {
                         return true;
                     }
                 });
-
-
-
-
 
 
 

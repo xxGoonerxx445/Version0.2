@@ -15,7 +15,6 @@ public class GameMoule {
     public GameMoule(ArrayList<Hook> Hooks)
     {
         this.Hooks=Hooks;
-
     }
     public void initDefaultHooks(Paint p) {
         Hooks.add(new Hook(300, 500, 75, p));
@@ -71,7 +70,7 @@ public class GameMoule {
             if(!(Hooks.get(i).isHooking(ball)))
                 Hooks.get(i).Activate();
 
-        }///
+        }
     }
 
 }
