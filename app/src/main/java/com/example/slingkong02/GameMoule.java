@@ -16,8 +16,6 @@ public class GameMoule {
     {
         this.Hooks=Hooks;
 
-
-
     }
     public void initDefaultHooks(Paint p) {
         Hooks.add(new Hook(300, 500, 75, p));
@@ -55,24 +53,25 @@ public class GameMoule {
                 b.setDx(0); // Stop movement
                 b.setDy(0);
                 b.setHooked(true);
-                //Hooks.get(i).deAct();
+                ReActivate(b);
 
                 return true;
 
-                //F = true; // Stop the thread from calling move()
             }
+
+
         }
         return false;
 
     }
     public void ReActivate(Ball ball)
     {
-        /*for(int i=0;i<Hooks.size();i++)
+        for(int i=0;i<Hooks.size();i++)
         {
             if(!(Hooks.get(i).isHooking(ball)))
                 Hooks.get(i).Activate();
 
-        }*///
+        }///
     }
 
 }

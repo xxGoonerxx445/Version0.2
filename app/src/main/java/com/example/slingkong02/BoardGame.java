@@ -164,7 +164,7 @@ public class BoardGame extends View {
 
                 F=false;
                 ThreadGame threadGame = new ThreadGame();
-                GM.ReActivate(b);
+                //GM.ReActivate(b);
                 //ThreadGame t2=new ThreadGame();
                 //t2.start();
                 threadGame.start(); //starts the thread
