@@ -141,8 +141,8 @@ public class BoardGame extends View {
                 float touchY = event.getY();
                 dx = (touchX - startX)/10;
                 dy = (touchY - startY)/10; // TODO: 04/01/2026 fix velocity 
-                b.setDx(dx);
-                b.setDy(dy);
+                b.setDx(-dx);
+                b.setDy(-dy);
                 
                 
                 if((dx*dx)+(dy*dy)<150*150)
@@ -176,13 +176,7 @@ public class BoardGame extends View {
                             F=true;  // Stop the thread from calling move()
                         }
 
-                        /*if(h.Collision(b.GetX(),b.GetY())) //this is an early test with 1 hook.
-                        {
-                            b.setNewLocation(h.GetPostionX(),h.GetPostionY());
-                            b.setDx(0); // Stop movement
-                            b.setDy(0);
-                            F = true; // Stop the thread from calling move()
-                        }*/
+
                         b.TouchedEdge(width,height);
 
                         return true;
