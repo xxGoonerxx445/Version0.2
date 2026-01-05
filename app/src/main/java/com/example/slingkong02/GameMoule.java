@@ -2,8 +2,11 @@ package com.example.slingkong02;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GameMoule {
 
@@ -16,11 +19,48 @@ public class GameMoule {
     {
         this.Hooks=Hooks;
     }
-    public void initDefaultHooks(Paint p) {
-        Hooks.add(new Hook(300, 500, 75, p));
-        Hooks.add(new Hook(600, 800, 75, p));
-        Hooks.add(new Hook(900, 1100, 75, p));
+
+    // TODO: 05/01/2026 make it that hooks are relativly closer to each other(not a must cuz we might add other stuff later to the screen) 
+    public void initDefaultHooks(Paint p,float width,float height) {
+        Random R=new Random();
+        float tx1=R.nextInt(75,(int)width-75);
+        float ty1=R.nextInt(75,(int)height-75);
+        Hooks.add(new Hook(tx1, ty1, 75, p));
+        //try {}
+        for(int i=1; i<3;i++)
+        {
+            float x1=R.nextInt(75,(int)width-75);
+            float y1=R.nextInt(75,(int)height-75);
+            if(x1!=tx1||y1!=ty1)
+            {
+                Hooks.add(new Hook(x1, y1, 75, p));
+               tx1=x1;
+               ty1=y1;
+            }
+
+        }
+
+
+       // Hooks.add(new Hook(300, 500, 75,p));
+       // Hooks.add(new Hook(600, 800, 75, p));
+      //  Hooks.add(new Hook(900, 1100, 75, p));
     }
+   /* public void RandomizeHooksLocation(float width,float height)
+    {
+        Random R=new Random();
+        float tx1=R.nextInt((int)width);
+        float ty1=R.nextInt((int)height);
+        //Hooks.get(0).setNewLocation(tx1,ty1)
+
+        for(int i=0;i<Hooks.size();i++)
+        {
+            float x=R.nextInt((int)width);
+            float y=R.nextInt((int)height);
+
+
+        }
+
+    }*/
 
     public void AddHook(Hook h)
     {

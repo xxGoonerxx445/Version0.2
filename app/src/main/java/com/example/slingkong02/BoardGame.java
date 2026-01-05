@@ -64,26 +64,13 @@ public class BoardGame extends View {
         p.setColor(Color.BLUE);
         b = new Ball(width/2, height-200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy 
         p2 = new Paint();
-        //h=new Hook(b.getX(),b.getY()-300,50,p2);
-        //h2=new Hook(b.getX()+250,b.getY()-300,50,p2);
+        
         GM=new GameMoule(new ArrayList<Hook>());
-        GM.initDefaultHooks(p2);
-
-
-
-        //GM.AddHook(h);
-       // GM.AddHook(h2);
-
-
-
-
-
-
+        GM.initDefaultHooks(p2,width,height);
 
 
 
         Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
-
 
 
 
@@ -159,8 +146,7 @@ public class BoardGame extends View {
 
 
                 F=false;
-                ThreadGame threadGame = new ThreadGame();
-                //GM.ReActivate(b);
+                ThreadGame threadGame = new ThreadGame(); // TODO: 05/01/2026 fix velocity by disabling making new threads all the time 
                 //ThreadGame t2=new ThreadGame();
                 //t2.start();
                 threadGame.start(); //starts the thread
@@ -169,7 +155,6 @@ public class BoardGame extends View {
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
                         invalidate();
-                        // TODO: 31/12/2025 check with every hook in array is there is a collsion
 
                         if(GM.isCollide(b))
                         {
