@@ -11,8 +11,6 @@ import java.util.Random;
 public class GameMoule {
 
     private ArrayList<Hook> Hooks= new ArrayList<Hook>();
-    private Boolean flagForThread;
-
 
 
     public GameMoule(ArrayList<Hook> Hooks)
@@ -41,26 +39,8 @@ public class GameMoule {
         }
 
 
-       // Hooks.add(new Hook(300, 500, 75,p));
-       // Hooks.add(new Hook(600, 800, 75, p));
-      //  Hooks.add(new Hook(900, 1100, 75, p));
     }
-   /* public void RandomizeHooksLocation(float width,float height)
-    {
-        Random R=new Random();
-        float tx1=R.nextInt((int)width);
-        float ty1=R.nextInt((int)height);
-        //Hooks.get(0).setNewLocation(tx1,ty1)
 
-        for(int i=0;i<Hooks.size();i++)
-        {
-            float x=R.nextInt((int)width);
-            float y=R.nextInt((int)height);
-
-
-        }
-
-    }*/
 
     public void AddHook(Hook h)
     {
@@ -68,10 +48,7 @@ public class GameMoule {
     }
 
     // TODO: 29/12/2025 for each hook in arraylist, if isnt connected to ball, activate
-    public void DeAct()
-    {
 
-    }
     public void DrawHooks(Canvas canvas)
     {
         for(int i=0;i<Hooks.size();i++)
