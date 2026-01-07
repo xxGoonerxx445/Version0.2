@@ -28,15 +28,14 @@ public class BoardGame extends View {
     private float viewWidth, viewHeight;
 
     private Handler animationHandler;
-    private Handler loweringspeed;
+    private ThreadGame threadGame = new ThreadGame();
     private Paint p2;
     private float dx;
     private float dy;
     private boolean F;
     private float startX, startY;
-    private Thread thread;
-    private Hook h;
-    private Hook h2;
+
+
     private GameMoule GM;
 
     private Bitmap BackGround;
@@ -44,15 +43,6 @@ public class BoardGame extends View {
     private int width,height;
 
 
-
-   /* private Runnable animationRunnable = new Runnable() {
-        @Override
-        public void run() {
-            b.move();
-            invalidate(); // Redraw the view
-            animationHandler.postDelayed(this, frameRate);
-        }
-    };*/
 
     public BoardGame(Context context) {
         super(context);
@@ -64,6 +54,24 @@ public class BoardGame extends View {
         p.setColor(Color.BLUE);
         b = new Ball(width/2, height-200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy 
         p2 = new Paint();
+        threadGame.start(); //starts the thread
+        animationHandler=new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull android.os.Message msg) {
+                b.move();
+                invalidate();
+
+                if(GM.isCollide(b))
+                {
+                    F=true;  // Stop the thread from calling move()
+                }
+
+
+                b.TouchedEdge(width,height);
+
+                return true;
+            }
+        });
         
         GM=new GameMoule(new ArrayList<Hook>());
         GM.initDefaultHooks(p2,width,height);
@@ -74,13 +82,6 @@ public class BoardGame extends View {
 
 
 
-
-
-
-
-        //animationHandler = new Handler()
-
-        //animationHandler.postDelayed(animationRunnable, frameRate);
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -126,10 +127,10 @@ public class BoardGame extends View {
             case MotionEvent.ACTION_MOVE:
                 float touchX = event.getX();
                 float touchY = event.getY();
-                dx = (touchX - startX)/10;
-                dy = (touchY - startY)/10; // TODO: 04/01/2026 fix velocity 
-                b.setDx(-dx);
-                b.setDy(-dy);
+                dx = (touchX - startX);
+                dy = (touchY - startY); // TODO: 04/01/2026 fix velocity
+                b.setDx(-dx/10);
+                b.setDy(-dy/10);
                 
                 
                 if((dx*dx)+(dy*dy)<150*150)
@@ -146,11 +147,11 @@ public class BoardGame extends View {
 
 
                 F=false;
-                ThreadGame threadGame = new ThreadGame(); // TODO: 05/01/2026 fix velocity by disabling making new threads all the time 
+                //ThreadGame threadGame = new ThreadGame(); // TODO: 05/01/2026 fix velocity by disabling making new threads all the time
                 //ThreadGame t2=new ThreadGame();
                 //t2.start();
-                threadGame.start(); //starts the thread
-                animationHandler=new Handler(new Handler.Callback() {
+                //threadGame.start(); //starts the thread
+                /*animationHandler=new Handler(new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull android.os.Message msg) {
                         b.move();
@@ -166,23 +167,7 @@ public class BoardGame extends View {
 
                         return true;
                     }
-                });
-
-
-                loweringspeed = new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message msg) {
-
-                        b.LowerSpeed();
-                        invalidate();
-
-
-                        //להוסיף את מה שמוריד מהירות
-
-                        return true;
-                    }
-                });
-
+                });*/
 
 
                 break;
