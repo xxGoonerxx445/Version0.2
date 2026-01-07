@@ -25,6 +25,7 @@ public class BoardGame extends View {
 
     private Ball b;
     private Paint p;
+    private float dyforhooks;
     private float viewWidth, viewHeight;
 
     private Handler animationHandler;
@@ -34,11 +35,9 @@ public class BoardGame extends View {
     private float dy;
     private boolean F;
     private float startX, startY;
-
-
     private GameMoule GM;
-
     private Bitmap BackGround;
+    private float StartLocation,EndLocation;
     private Rect destRect;
     private int width,height;
 
@@ -59,6 +58,17 @@ public class BoardGame extends View {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 b.move();
+                StartLocation=b.GetY();
+                if(b.GetDy()==0&&b.GetDx()==0)
+                    EndLocation=b.getY();
+                dyforhooks=EndLocation-StartLocation;
+                if(dyforhooks>200)
+                {
+                    GM.MoveDownHooks(b);
+                    dyforhooks=0;
+                }
+
+
                 invalidate();
 
                 if(GM.isCollide(b))
@@ -142,7 +152,6 @@ public class BoardGame extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                // You could use dx and dy here to launch the ball
                 //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
 
 
@@ -174,9 +183,6 @@ public class BoardGame extends View {
         }
         return true;
     }
-
-
-
 
 
 

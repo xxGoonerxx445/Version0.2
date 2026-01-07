@@ -10,6 +10,7 @@ public class Ball extends Base{
     private float dx, dy;
     private float radius;
     private boolean hooked = false;
+    private float StopLocation;
 
     private Paint paint;
 
@@ -50,6 +51,9 @@ public class Ball extends Base{
     public void setDx(float dx) {
         this.dx = dx;
     }
+    public float GetDy() {return this.dy;}
+    public float GetDx() {return this.dx;}
+
     public void setDy(float dy) {
         this.dy = dy;
     }

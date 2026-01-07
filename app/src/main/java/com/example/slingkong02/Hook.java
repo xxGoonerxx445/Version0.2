@@ -7,8 +7,6 @@ public class Hook extends Base{
     private float radius;
     private Paint paint;
     private Boolean Active;
-    // TODO: 24/12/2025 add isActive to disable hook after you moved the ball to launch(not sure)
-
 
 
     public Hook(float x, float y,float radius,Paint paint) {
@@ -54,6 +52,11 @@ public class Hook extends Base{
         if(this.x==b.GetX()&&this.y==b.getY())
             return true;
         return false;
+    }
+    public void SetPosition(float x,float y)
+    {
+        this.x=x;
+        this.y=y;
     }
 
 

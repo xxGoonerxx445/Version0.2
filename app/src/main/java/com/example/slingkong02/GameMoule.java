@@ -47,8 +47,6 @@ public class GameMoule {
         Hooks.add(h);
     }
 
-    // TODO: 29/12/2025 for each hook in arraylist, if isnt connected to ball, activate
-
     public void DrawHooks(Canvas canvas)
     {
         for(int i=0;i<Hooks.size();i++)
@@ -87,6 +85,14 @@ public class GameMoule {
             if(!(Hooks.get(i).isHooking(ball)))
                 Hooks.get(i).Activate();
 
+        }
+    }
+    public void MoveDownHooks(Ball ball)
+    {
+        float dy=ball.GetDy();
+        for(int i=0;i<Hooks.size();i++)
+        {
+            Hooks.get(i).SetPosition(Hooks.get(i).GetPostionX(),Hooks.get(i).GetPostionY()+(dy*dy)/dy);
         }
     }
 
