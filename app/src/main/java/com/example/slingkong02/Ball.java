@@ -37,6 +37,8 @@ public class Ball extends Base {
         x = x + dx;
         y = y + dy;
     }
+    public void setX(float x) { this.x = x; }
+    public void setY(float y) { this.y = y; }
 
     public void setDx(float dx) { this.dx = dx; }
     public void setDy(float dy) { this.dy = dy; }

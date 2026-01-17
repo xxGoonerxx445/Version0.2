@@ -31,6 +31,9 @@ public class Hook extends Base{
         canvas.drawCircle(x,y,radius,paint);
 
     }
+    public void setY(float y) {
+        this.y = y;
+    }
     public boolean Collision(float x,float y)
     {
         if(!Active) return false;
