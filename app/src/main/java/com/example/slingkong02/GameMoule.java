@@ -42,7 +42,7 @@ public class GameMoule {
             if (h.getY() < minY) {
                 minY = h.getY();
             }
-        }
+        } ////
 
         while (minY > -height) {
             float x = 75 + random.nextInt((int) width - 150);
