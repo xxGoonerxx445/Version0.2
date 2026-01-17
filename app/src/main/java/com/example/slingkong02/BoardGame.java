@@ -46,35 +46,49 @@ public class BoardGame extends View {
 
     public BoardGame(Context context) {
         super(context);
-        BackGround=BitmapFactory.decodeResource(getResources(),R.drawable.bgimage);
+        BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
         DisplayMetrics ds = getResources().getDisplayMetrics();
-        width=ds.widthPixels;
-        height=ds.heightPixels;
+        width = ds.widthPixels;
+        height = ds.heightPixels;
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width/2, height-200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy 
+        b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
         p2 = new Paint();
-        threadGame.start(); //starts the thread
-        animationHandler=new Handler(new Handler.Callback() {
+
+        GM = new GameMoule(new ArrayList<Hook>());
+        GM.initDefaultHooks(p2, width, height);
+        animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
-                b.move();
-                invalidate();
+                if (!F) {
+                    b.move();
 
-                if(GM.isCollide(b))
-                {
-                    F=true;  // Stop the thread from calling move()
+                    // --- INFINITE SCROLLING LOGIC ---
+                    // If ball goes above the middle of the screen, scroll the world down
+                    float threshold = height / 2.0f;
+                    if (b.getY() < threshold) {
+                        float offset = threshold - b.getY();
+                        b.setY(threshold); // Keep ball at threshold
+                        GM.shiftHooks(offset, width, height, p2);
+                    }
+                    // --------------------------------
+
+                    if (GM.isCollide(b)) {
+                        F = true; // Hooked
+                    }
+
+                    b.TouchedEdge(width, height);
+                    invalidate();
                 }
-
-
-                b.TouchedEdge(width,height);
-
                 return true;
             }
         });
-        
-        GM=new GameMoule(new ArrayList<Hook>());
-        GM.initDefaultHooks(p2,width,height);
+
+
+        threadGame.start();
+        Toast.makeText(getContext(), "Infinite Mode Active", Toast.LENGTH_SHORT).show();
+
+
 
 
 
@@ -125,7 +139,7 @@ public class BoardGame extends View {
 
                 break;
             case MotionEvent.ACTION_MOVE:
-                float touchX = event.getX();
+                /*float touchX = event.getX();
                 float touchY = event.getY();
                 dx = (touchX - startX);
                 dy = (touchY - startY); // TODO: 04/01/2026 fix velocity
@@ -140,34 +154,28 @@ public class BoardGame extends View {
               
 
                 invalidate();
+                break;*/
+                if (F && !b.isHooked()) { // Only allow dragging if we touched the ball
+                    float touchX = event.getX();
+                    float touchY = event.getY();
+                    dx = (touchX - startX);
+                    dy = (touchY - startY);
+
+                    // Limit drag distance
+                    if ((dx * dx) + (dy * dy) < 300 * 300) {
+                        b.setNewLocation(touchX, touchY);
+                    }
+                }
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                // You could use dx and dy here to launch the ball
-                //פה זה אמור להבין שהפסקתי את הפעולה ולהתחיל את move בעזרת הthread וhandler
+                if (F && !b.isHooked()) {
+                    // Launch ball in opposite direction of drag
+                    b.setDx(-(event.getX() - startX) / 10f);
+                    b.setDy(-(event.getY() - startY) / 10f);
+                    F = false; // Start movement
+                }
 
-
-                F=false;
-                //ThreadGame threadGame = new ThreadGame(); // TODO: 05/01/2026 fix velocity by disabling making new threads all the time
-                //ThreadGame t2=new ThreadGame();
-                //t2.start();
-                //threadGame.start(); //starts the thread
-                /*animationHandler=new Handler(new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull android.os.Message msg) {
-                        b.move();
-                        invalidate();
-
-                        if(GM.isCollide(b))
-                        {
-                            F=true;  // Stop the thread from calling move()
-                        }
-
-
-                        b.TouchedEdge(width,height);
-
-                        return true;
-                    }
-                });*/
 
 
                 break;
@@ -191,10 +199,9 @@ public class BoardGame extends View {
             {
                 try {
                     sleep(16);
-                    if(F==false)
-                        animationHandler.sendEmptyMessage(0);
+                    animationHandler.sendEmptyMessage(0);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                   break;
                 }
             }
         }
