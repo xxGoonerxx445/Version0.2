@@ -60,8 +60,9 @@ public class Ball extends Base{
     }
     public boolean didusertouch(float x, float y)
     {
-        if(x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius);
-        return true;
+        if(x>=this.x-radius&&x<=this.x+radius&&y>=this.y-radius&&y<=this.y+radius)
+            return true;
+        return false;
 
     }
     public void TouchedEdge(float screenWidth, float screenHeight) //checks if edeges of the screen where touched, if true than changes to the opposite dx/dy
