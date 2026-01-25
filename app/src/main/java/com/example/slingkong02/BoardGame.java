@@ -72,11 +72,7 @@ public class BoardGame extends View {
 //                    }
 
                     // --- INFINITE SCROLLING LOGIC ---
-                    // If ball goes above the middle of the screen, scroll the world down
-                    //float threshold = height / 2.0f;
-                  // if (b.getY() < threshold) {
-                     //   float offset = threshold - b.getY();
-                      //  b.setY(threshold); // Keep ball at threshold
+                    // ep ball at threshold
                        // GM.shiftHooks(offset, width, height, p2);
                    // }
                     // --------------------------------
