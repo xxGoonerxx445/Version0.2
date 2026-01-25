@@ -71,10 +71,7 @@ public class BoardGame extends View {
 //                        GM.ShiftHooks(distance);
 //                    }
 
-                    // --- INFINITE SCROLLING LOGIC ---
-                    // ep ball at threshold
-                       // GM.shiftHooks(offset, width, height, p2);
-                   // }
+
                     // --------------------------------
 // TODO: 25/01/2026 make all of thr distance calc inside GM 
                     if (GM.isCollide(b)) {
