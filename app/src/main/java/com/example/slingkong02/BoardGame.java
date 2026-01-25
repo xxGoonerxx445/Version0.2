@@ -74,21 +74,9 @@ public class BoardGame extends View {
 
                     // --------------------------------
 // TODO: 25/01/2026 make all of thr distance calc inside GM 
-                    if (GM.isCollide(b)) {
+                    if (GM.isCollide(b,StartYforShift,b.GetY())) {
                         F = true; // Hooked
-                        if(b.isHooked())
-                        {
-                            float distance=b.getY()-StartYforShift;
-                            Toast.makeText(getContext(), "distance="+distance, Toast.LENGTH_SHORT).show();
-                            if(distance<0)
-                            {
-                                distance=-distance;
-                                Toast.makeText(getContext(), "distance="+distance, Toast.LENGTH_SHORT).show();
-                                GM.ShiftHooks(distance,b);
 
-
-                            }
-                        }
                     }
 
                     b.TouchedEdge(width, height);

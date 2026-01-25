@@ -9,6 +9,7 @@ public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
+    private float Distance;
 
     public GameMoule(ArrayList<Hook> Hooks) {
         this.Hooks = Hooks;
@@ -26,39 +27,15 @@ public class GameMoule {
         }
     }
 
-    /*public void shiftHooks(float offset, float width, float height, Paint p) {
-        for (Hook h : Hooks) {
-            h.setY(h.getY() + offset);
-        }
-
-        for (int i = Hooks.size() - 1; i >= 0; i--) {
-            if (Hooks.get(i).getY() > height + 500) {
-                Hooks.remove(i);
-            }
-        }
-
-        float minY = height;
-        for (Hook h : Hooks) {
-            if (h.getY() < minY) {
-                minY = h.getY();
-            }
-        } ////
-
-        while (minY > -height) {
-            float x = 75 + random.nextInt((int) width - 150);
-            minY -= 300 + random.nextInt(200);
-            Hooks.add(new Hook(x, minY, 75, p));
-        }
-    }*/
-
     public void DrawHooks(Canvas canvas) {
         for (int i = 0; i < Hooks.size(); i++) {
             Hooks.get(i).draw(canvas);
         }
     }
 
-    public boolean isCollide(Ball b) {
+    public boolean isCollide(Ball b,float StartY,float Ball_location) {
         if (b.isHooked()) return true;
+
 
         for (int i = 0; i < Hooks.size(); i++) {
             if (Hooks.get(i).Collision(b.GetX(), b.GetY())) {
@@ -67,6 +44,10 @@ public class GameMoule {
                 b.setDy(0);
                 b.setHooked(true);
                 ReActivate(b);
+                Distance=Ball_location-StartY;
+                if(Distance<0)
+                    Distance=-Distance;
+                ShiftHooks(b);
                 return true;
             }
         }
@@ -79,11 +60,7 @@ public class GameMoule {
                 Hooks.get(i).Activate();
         }
     }
-    public float SendToShift(Ball ball)
-    {
-        return ball.getY();
-    }
-    public void ShiftHooks(float distace,Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
+    public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
     {
         //i think that i solved it
         for(int i=0; i< Hooks.size(); i++)
@@ -91,7 +68,11 @@ public class GameMoule {
             //Hooks.get(i).setY(Hooks.get(i).getY()+distace);
             //b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
             if(!(Hooks.get(i).isHooking(b)))
-            {Hooks.get(i).setY(Hooks.get(i).getY()+distace);}
+            {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}
         }
     }
+
+    // TODO: 25/01/2026 spawnNewHooks: spawn new after a great distance has been made, also if the hooks moved under the screen delete them. 
+    public void SpawnNewHooks()
+    {}
 }
