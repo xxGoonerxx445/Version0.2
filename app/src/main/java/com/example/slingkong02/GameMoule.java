@@ -72,7 +72,7 @@ public class GameMoule {
             {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}
         }
     }
-    //
+
 
     // TODO: 26/01/2026 need to add moving animation in order to make this work 
     // TODO: 26/01/2026 recycling hooks, for now, may make it create new hooks in the future
