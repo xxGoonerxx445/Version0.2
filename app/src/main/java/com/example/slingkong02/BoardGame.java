@@ -25,6 +25,7 @@ public class BoardGame extends View {
 
     private Ball b;
     private Paint p;
+
     private float viewWidth, viewHeight;
 
     private Handler animationHandler;
@@ -63,7 +64,7 @@ public class BoardGame extends View {
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 if (!F) {
                     b.move();
-                    GM.SpawnNewHooks(height,b,width);
+                    //GM.SpawnNewHooks(height,b,width);
 
 
 
