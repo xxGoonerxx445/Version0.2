@@ -15,6 +15,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowMetrics;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,8 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class BoardGame extends View {
-
+    private TextView textView; // TODO: 26/01/2026 add score screen in the top right 
+    private int Score;
     private Ball b;
     private Paint p;
 
@@ -52,6 +54,7 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
+
         p = new Paint();
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
@@ -89,6 +92,7 @@ public class BoardGame extends View {
 
 
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -110,10 +114,17 @@ public class BoardGame extends View {
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
+        textView.draw(canvas); // TODO: 26/01/2026 "" 
 
 
 
 
+    }
+    public void ShowScore(int score,Context context,Canvas canvas)
+    {
+        score=10;
+        textView.setText("Score: " + score);
+        
     }
 
     @Override
@@ -161,12 +172,6 @@ public class BoardGame extends View {
         }
         return true;
     }
-
-
-
-
-
-
 
 
 
