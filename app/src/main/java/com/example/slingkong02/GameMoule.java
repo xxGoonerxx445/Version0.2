@@ -47,6 +47,7 @@ public class GameMoule {
                 Distance=Ball_location-StartY;
                 if(Distance<0)
                     Distance=-Distance;
+
                 ShiftHooks(b);
                 return true;
             }
@@ -65,14 +66,27 @@ public class GameMoule {
         //i think that i solved it
         for(int i=0; i< Hooks.size(); i++)
         {
-            //Hooks.get(i).setY(Hooks.get(i).getY()+distace);
+            //Hooks.get(i).setY(Hooks.get(i).getY()+Distance);
             //b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
             if(!(Hooks.get(i).isHooking(b)))
             {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}
         }
     }
 
+    // TODO: 26/01/2026 need to add moving animation in order to make this work 
+    // TODO: 26/01/2026 recycling hooks, for now, may make it create new hooks in the future
     // TODO: 25/01/2026 spawnNewHooks: spawn new after a great distance has been made, also if the hooks moved under the screen delete them. 
-    public void SpawnNewHooks()
-    {}
+    public void SpawnNewHooks(float screenHeight,Ball b,float screenWidth)
+    {
+        for(int i=0; i<Hooks.size(); i++)
+        {
+            if(Hooks.get(i).getY()>screenHeight)
+            {
+                float y_forrecycle =random.nextFloat(0,b.getY());
+                float x_forrecycle= random.nextFloat(0,screenWidth);
+                Hooks.get(i).SetPosition(x_forrecycle,y_forrecycle);
+            }
+
+        }
+    }
 }

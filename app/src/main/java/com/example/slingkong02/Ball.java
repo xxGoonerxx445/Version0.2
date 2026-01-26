@@ -36,6 +36,9 @@ public class Ball extends Base {
 
     public float GetX() { return x; }
     public float GetY() { return y; }
+    public float GetDx() { return dx; }
+    //public float GetDy() { return dy; }
+
 
     public void move() {
         x = x + dx;

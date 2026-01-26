@@ -63,17 +63,11 @@ public class BoardGame extends View {
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 if (!F) {
                     b.move();
-//                    if(b.isHooked())
-//                    {
-//                     float distance=b.getY()-StartYforShift;
-//                        Toast.makeText(getContext(), "distance="+distance, Toast.LENGTH_SHORT).show();
-//                     if(distance<0)
-//                        GM.ShiftHooks(distance);
-//                    }
+                    GM.SpawnNewHooks(height,b,width);
+
 
 
                     // --------------------------------
-// TODO: 25/01/2026 make all of thr distance calc inside GM 
                     if (GM.isCollide(b,StartYforShift,b.GetY())) {
                         F = true; // Hooked
 

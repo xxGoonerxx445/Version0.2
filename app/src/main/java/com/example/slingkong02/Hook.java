@@ -58,6 +58,13 @@ public class Hook extends Base{
             return true;
         return false;
     }
+    public void SetPosition(float X,float Y)
+    {
+        this.y=Y;
+        this.x=X;
+    }
+
+
 
 
 
