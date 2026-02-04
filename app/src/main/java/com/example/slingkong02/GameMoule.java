@@ -15,6 +15,7 @@ public class GameMoule {
         this.Hooks = Hooks;
     }
 
+    // TODO: 04/02/2026 make the initdefualt no spawn hooks too close to the edges of the screen 
     public void initDefaultHooks(Paint p, float width, float height) {
         Hooks.clear();
         // Start spawning hooks above the ball's starting position
@@ -90,8 +91,12 @@ public class GameMoule {
 
         }
     }
-    public int Score(Ball b)
+    public int CalcScore()
     {
-     return 0;
+        return 10;
+    }
+    public void ShowScore(Canvas canvas,Paint p,int score)
+    {
+        canvas.drawText("Score= "+score,5,150,p);
     }
 }

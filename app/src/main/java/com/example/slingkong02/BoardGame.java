@@ -23,16 +23,14 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class BoardGame extends View {
-    private TextView textView; // TODO: 26/01/2026 add score screen in the top right 
-    private int Score;
+    private TextView textView; // TODO: 26/01/2026 add score screen in the top right
     private Ball b;
-    private Paint p;
 
     private float viewWidth, viewHeight;
 
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p2;
+    private Paint p,p2,p3;
     private float dx;
     private float StartYforShift;
     private float dy;
@@ -41,6 +39,7 @@ public class BoardGame extends View {
 
 
     private GameMoule GM;
+    private int Scoree;
 
     private Bitmap BackGround;
     private Rect destRect;
@@ -54,14 +53,19 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
-        textView=new TextView(context);
+        //textView=new TextView(context);
+        //int widthspec=MeasureSpec.makeMeasureSpec(width,MeasureSpec.AT_MOST);
+       // int heightspec=MeasureSpec.makeMeasureSpec(height,MeasureSpec.AT_MOST);
+     //   textView.measure(widthspec,heightspec);
         p = new Paint();
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
         p2 = new Paint();
-
+        p3=new Paint();
+        p3.setColor(Color.BLACK); p3.setStrokeWidth(5); p3.setTextSize(75);
         GM = new GameMoule(new ArrayList<Hook>());
         GM.initDefaultHooks(p2, width, height);
+        Scoree=GM.CalcScore();
         animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
@@ -104,12 +108,11 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
+        GM.ShowScore(canvas,p3,Scoree);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
-        //textView.draw(canvas); // TODO: 26/01/2026 ""
-        //ShowScore(canvas);
 
 
 
@@ -117,14 +120,7 @@ public class BoardGame extends View {
 
 
     }
-    public void ShowScore(Canvas canvas)
-    {
-        int score=10;
-        textView.setText("Score: " + score);
-        textView.draw(canvas);
-        invalidate();
-        
-    }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
