@@ -54,7 +54,7 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
-
+        textView=new TextView(context);
         p = new Paint();
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
@@ -67,11 +67,6 @@ public class BoardGame extends View {
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 if (!F) {
                     b.move();
-                    //GM.SpawnNewHooks(height,b,width);
-
-
-
-                    // --------------------------------
                     if (GM.isCollide(b,StartYforShift,b.GetY())) {
                         F = true; // Hooked
 
@@ -86,7 +81,6 @@ public class BoardGame extends View {
 
 
         threadGame.start();
-        //Toast.makeText(getContext(), "Infinite Mode Active", Toast.LENGTH_SHORT).show();
         Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
 
 
@@ -114,16 +108,21 @@ public class BoardGame extends View {
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
-        textView.draw(canvas); // TODO: 26/01/2026 "" 
+        //textView.draw(canvas); // TODO: 26/01/2026 ""
+        //ShowScore(canvas);
+
+
 
 
 
 
     }
-    public void ShowScore(int score,Context context,Canvas canvas)
+    public void ShowScore(Canvas canvas)
     {
-        score=10;
+        int score=10;
         textView.setText("Score: " + score);
+        textView.draw(canvas);
+        invalidate();
         
     }
 

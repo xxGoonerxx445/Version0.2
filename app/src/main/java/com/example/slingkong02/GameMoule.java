@@ -90,4 +90,8 @@ public class GameMoule {
 
         }
     }
+    public int Score(Ball b)
+    {
+     return 0;
+    }
 }
