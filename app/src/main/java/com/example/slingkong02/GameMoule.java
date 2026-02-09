@@ -71,6 +71,7 @@ public class GameMoule {
             //b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
             if(!(Hooks.get(i).isHooking(b)))
             {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}
+
         }
     }
 

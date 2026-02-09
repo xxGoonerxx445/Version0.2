@@ -28,7 +28,7 @@ public class BoardGame extends View {
 
     private float viewWidth, viewHeight;
 
-    private Handler animationHandler;
+    private Handler animationHandler,SpawnHooksHandler;
     private ThreadGame threadGame = new ThreadGame();
     private Paint p,p2,p3;
     private float dx;
@@ -53,10 +53,6 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
-        //textView=new TextView(context);
-        //int widthspec=MeasureSpec.makeMeasureSpec(width,MeasureSpec.AT_MOST);
-       // int heightspec=MeasureSpec.makeMeasureSpec(height,MeasureSpec.AT_MOST);
-     //   textView.measure(widthspec,heightspec);
         p = new Paint();
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
@@ -69,6 +65,8 @@ public class BoardGame extends View {
         animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
+
+                //GM.SpawnNewHooks(height,b,width); todo need to make  a new thread for this to work
                 if (!F) {
                     b.move();
                     if (GM.isCollide(b,StartYforShift,b.GetY())) {
@@ -82,6 +80,17 @@ public class BoardGame extends View {
                 return true;
             }
         });
+
+        SpawnHooksHandler=new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull android.os.Message msg) {
+                GM.SpawnNewHooks(height,b,width);
+                invalidate();
+                return true;
+            }
+        });
+
+
 
 
         threadGame.start();
