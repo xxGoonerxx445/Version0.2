@@ -77,18 +77,20 @@ public class BoardGame extends View {
                     b.TouchedEdge(width, height);
                     invalidate();
                 }
+                GM.SpawnNewHooks(height,b,width);
+                invalidate();
                 return true;
             }
         });
 
-        SpawnHooksHandler=new Handler(new Handler.Callback() {
+       /* SpawnHooksHandler=new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 GM.SpawnNewHooks(height,b,width);
                 invalidate();
                 return true;
             }
-        });
+        });*/
 
 
 

@@ -85,8 +85,11 @@ public class GameMoule {
         {
             if(Hooks.get(i).getY()>screenHeight)
             {
-                float y_forrecycle =random.nextFloat(0,b.getY());
-                float x_forrecycle= random.nextFloat(0,screenWidth);
+                //give number between 0 and the location of ball y(so above ball)
+                float y_forrecycle = random.nextInt((int) b.getY());
+                float x_forrecycle = random.nextInt((int) screenWidth); //between 0 and width
+                //float y_forrecycle =random.nextFloat(0,b.getY());
+                //float x_forrecycle= random.nextFloat(0,screenWidth);
                 Hooks.get(i).SetPosition(x_forrecycle,y_forrecycle);
             }
 
