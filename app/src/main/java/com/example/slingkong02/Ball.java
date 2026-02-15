@@ -56,7 +56,7 @@ public class Ball extends Base {
     }
 
     public boolean didusertouch(float tx, float ty) {
-        // Fix: Removed the semicolon so it actually checks the distance
+
         return (tx >= x - radius && tx <= x + radius && ty >= y - radius && ty <= y + radius);
     }
 

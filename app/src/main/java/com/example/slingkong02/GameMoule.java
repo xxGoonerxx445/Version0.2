@@ -67,10 +67,11 @@ public class GameMoule {
         //i think that i solved it
         for(int i=0; i< Hooks.size(); i++)
         {
-            //Hooks.get(i).setY(Hooks.get(i).getY()+Distance);
-            //b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
-            if(!(Hooks.get(i).isHooking(b)))
-            {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}
+            Hooks.get(i).setY(Hooks.get(i).getY()+Distance);
+            b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
+            //--------------------------------------//
+            /*if(!(Hooks.get(i).isHooking(b)))
+            {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}*/
 
         }
     }
@@ -79,17 +80,23 @@ public class GameMoule {
     // TODO: 26/01/2026 need to add moving animation in order to make this work 
     // TODO: 26/01/2026 recycling hooks, for now, may make it create new hooks in the future
     // TODO: 25/01/2026 spawnNewHooks: spawn new after a great distance has been made, also if the hooks moved under the screen delete them. 
-    public void SpawnNewHooks(float screenHeight,Ball b,float screenWidth)
+    public void SpawnNewHooks(float screenHeight,Ball b,float screenWidth) //--bugs: if you hook on a hook that is close to the end of the screen, the hook bumps to the top of the screen with the ball
     {
         for(int i=0; i<Hooks.size(); i++)
         {
             if(Hooks.get(i).getY()>screenHeight)
             {
                 //give number between 0 and the location of ball y(so above ball)
-                float y_forrecycle = random.nextInt((int) b.getY());
+                float y_forrecycle = random.nextInt((int) b.getY()-200);
                 float x_forrecycle = random.nextInt((int) screenWidth); //between 0 and width
-                //float y_forrecycle =random.nextFloat(0,b.getY());
-                //float x_forrecycle= random.nextFloat(0,screenWidth);
+                for(int j=0; j<Hooks.size(); j++)
+                {
+                    if(i!=j&&Hooks.get(j).getX()>x_forrecycle-75 && Hooks.get(j).getX()<x_forrecycle+75)
+                        x_forrecycle = random.nextInt((int) screenWidth);
+
+                    if(i!=j&&Hooks.get(j).getY()>y_forrecycle-75 && Hooks.get(j).getY()<y_forrecycle+75)
+                        y_forrecycle = random.nextInt((int) b.getY()-200);
+                }
                 Hooks.get(i).SetPosition(x_forrecycle,y_forrecycle);
             }
 
@@ -102,5 +109,15 @@ public class GameMoule {
     public void ShowScore(Canvas canvas,Paint p,int score)
     {
         canvas.drawText("Score= "+score,5,150,p);
+    }
+
+    public void FixedShiftHooks(Ball b,float distance)
+    {
+
+
+        for(int i=0; i< Hooks.size(); i++)
+        {
+
+        }
     }
 }
