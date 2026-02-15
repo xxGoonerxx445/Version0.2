@@ -62,6 +62,7 @@ public class GameMoule {
                 Hooks.get(i).Activate();
         }
     }
+    //shiftHooks has a bug that bump the first hook to the top
     public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
     {
         //i think that i solved it
