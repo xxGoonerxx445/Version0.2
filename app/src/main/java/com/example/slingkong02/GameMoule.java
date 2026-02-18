@@ -9,7 +9,7 @@ public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
-    private int tmp;
+    //private int tmp;
     private float Distance;
 
     public GameMoule(ArrayList<Hook> Hooks) {
@@ -64,18 +64,49 @@ public class GameMoule {
         }
     }
     //shiftHooks has a bug that bump the first hook to the top
-    public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
+    /*public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
     {
+        int HookedHook=-1;
         for(int i=0; i< Hooks.size(); i++) //line 72 fix- check which hook hooked him
         {
-            if(Hooks.get(i).isHooking(b))
-                tmp=i;
+            if (Hooks.get(i).isHooking(b))
+                HookedHook = i;
+            break;
+        }
             //--------------------------------------//
+        for(int i=0; i< Hooks.size(); i++)
+        {
             Hooks.get(i).setY(Hooks.get(i).getY()+Distance*0.8f);
-            b.setNewLocation(Hooks.get(tmp).getX(),Hooks.get(tmp).getY());
+            //b.setNewLocation(Hooks.get(tmp).getX(),Hooks.get(tmp).getY());
 
         }
+
+
+
+    }*/
+    public void ShiftHooks(Ball b)
+    {
+        int hookedHookIndex = -1;
+        // 1. Find the index of the hook the ball is currently hooked to (FIRST)
+        for (int i = 0; i < Hooks.size(); i++) {
+            if (Hooks.get(i).isHooking(b)) {
+                hookedHookIndex = i;
+                break; // Found the hooked hook, exit this loop
+            }
+        }
+
+        // 2. Shift all hooks (SECOND)
+        for (int i = 0; i < Hooks.size(); i++) {
+            Hooks.get(i).setY(Hooks.get(i).getY() + Distance * 0.9f);
+        }
+
+        // 3. If the ball is hooked, update its position to match the new position of the hooked hook (LAST)
+        if (hookedHookIndex != -1) {
+            Hook hookedHook = Hooks.get(hookedHookIndex);
+            b.setNewLocation(hookedHook.getX(), hookedHook.getY());
+        }
     }
+
 
 
     // TODO: 26/01/2026 need to add moving animation in order to make this work 
