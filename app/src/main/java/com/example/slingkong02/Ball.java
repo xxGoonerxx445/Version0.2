@@ -44,6 +44,11 @@ public class Ball extends Base {
         x = x + dx;
         y = y + dy;
     }
+    /*public void Gravity()
+    {
+        if(dy<0)
+            y=y+5f;
+    }*/
     public void setX(float x) { this.x = x; }
     public void setY(float y) { this.y = y; }
 

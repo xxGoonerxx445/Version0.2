@@ -75,7 +75,7 @@ public class BoardGame extends View {
                     }
 
                     b.TouchedEdge(width, height);
-                    invalidate();
+                    //invalidate();
                 }
                 GM.SpawnNewHooks(height,b,width);
                 invalidate();

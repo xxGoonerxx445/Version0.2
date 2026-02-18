@@ -9,6 +9,7 @@ public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
+    private int tmp;
     private float Distance;
 
     public GameMoule(ArrayList<Hook> Hooks) {
@@ -65,14 +66,13 @@ public class GameMoule {
     //shiftHooks has a bug that bump the first hook to the top
     public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
     {
-        //i think that i solved it
-        for(int i=0; i< Hooks.size(); i++)
+        for(int i=0; i< Hooks.size(); i++) //line 72 fix- check which hook hooked him
         {
-            Hooks.get(i).setY(Hooks.get(i).getY()+Distance);
-            b.setNewLocation(Hooks.get(i).getX(),Hooks.get(i).getY());
+            if(Hooks.get(i).isHooking(b))
+                tmp=i;
             //--------------------------------------//
-            /*if(!(Hooks.get(i).isHooking(b)))
-            {Hooks.get(i).setY(Hooks.get(i).getY()+Distance);}*/
+            Hooks.get(i).setY(Hooks.get(i).getY()+Distance*0.8f);
+            b.setNewLocation(Hooks.get(tmp).getX(),Hooks.get(tmp).getY());
 
         }
     }
