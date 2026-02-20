@@ -23,21 +23,16 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 public class BoardGame extends View {
-    private TextView textView; // TODO: 26/01/2026 add score screen in the top right
     private Ball b;
-
     private float viewWidth, viewHeight;
-
     private Handler animationHandler,SpawnHooksHandler;
     private ThreadGame threadGame = new ThreadGame();
     private Paint p,p2,p3;
     private float dx;
     private float StartYforShift;
     private float dy;
-    private boolean F;
+    private boolean F,WasFirstDrag=false;
     private float startX, startY;
-
-
     private GameMoule GM;
     private int Scoree;
 
@@ -68,6 +63,8 @@ public class BoardGame extends View {
 
                 //GM.SpawnNewHooks(height,b,width); todo need to make  a new thread for this to work
                 if (!F) {
+                    if(WasFirstDrag)
+                        b.applyGravity();
                     b.move();
                     if (GM.isCollide(b,StartYforShift,b.GetY())) {
                         F = true; // Hooked
@@ -137,7 +134,7 @@ public class BoardGame extends View {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(b.didusertouch(event.getX(), event.getY()))
+                if(b.didusertouch(event.getX(), event.getY()) &&b.isHooked()||WasFirstDrag==false) // TODO: 2/20/2026 do that he can only drag if hooked, not in the air
                 {
                     b.setHooked(false);   //  release from hook
                     F=true;
@@ -170,6 +167,7 @@ public class BoardGame extends View {
                     b.setDx(-(event.getX() - startX) / 10f);
                     b.setDy(-(event.getY() - startY) / 10f);
                     F = false; // Start movement
+                    WasFirstDrag=true;
                 }
 
 

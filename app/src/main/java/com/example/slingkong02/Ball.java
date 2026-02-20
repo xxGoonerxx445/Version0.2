@@ -44,11 +44,13 @@ public class Ball extends Base {
         x = x + dx;
         y = y + dy;
     }
-    /*public void Gravity()
-    {
-        if(dy<0)
-            y=y+5f;
-    }*/
+
+    public void applyGravity() {
+        if (!hooked) {
+            dy += 0.02f; // Gravity constant
+        }
+    }
+
     public void setX(float x) { this.x = x; }
     public void setY(float y) { this.y = y; }
 
@@ -70,7 +72,8 @@ public class Ball extends Base {
             dx = -dx;
         }
         if (y + radius >= screenHeight) {
-            dy = -dy;
+            dy = -dy * 0.02f; // Bounce with some energy loss
+            //dy = -dy;
             y = screenHeight - radius;
         }
     }
