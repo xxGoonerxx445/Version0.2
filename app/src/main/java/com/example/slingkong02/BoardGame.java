@@ -35,6 +35,7 @@ public class BoardGame extends View {
     private float startX, startY;
     private GameMoule GM;
     private int Scoree;
+    private Bitmap Monkey=BitmapFactory.decodeResource(getResources(),R.drawable.monkey_gpt);
 
     private Bitmap BackGround;
     private Rect destRect;
@@ -45,12 +46,15 @@ public class BoardGame extends View {
     public BoardGame(Context context) {
         super(context);
         BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
+        Monkey = Bitmap.createScaledBitmap(Monkey, 150, 150, true);
+
+        //Monkey=BitmapFactory.decodeResource(getResources(),R.drawable.monkey);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
+        b = new Ball(width / 2, height - 200, 0, 0, 50,Monkey); // TODO: fix the image not being in the middle
         p2 = new Paint();
         p3=new Paint();
         p3.setColor(Color.BLACK); p3.setStrokeWidth(5); p3.setTextSize(75);
@@ -80,21 +84,7 @@ public class BoardGame extends View {
             }
         });
 
-       /* SpawnHooksHandler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull android.os.Message msg) {
-                GM.SpawnNewHooks(height,b,width);
-                invalidate();
-                return true;
-            }
-        });*/
-
-
-
-
         threadGame.start();
-        Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
-
 
 
     }
@@ -121,11 +111,6 @@ public class BoardGame extends View {
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
-
-
-
-
-
 
     }
 

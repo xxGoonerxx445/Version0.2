@@ -1,5 +1,7 @@
 package com.example.slingkong02;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -8,16 +10,33 @@ public class Ball extends Base {
     private float radius;
     private boolean hooked = false;
     private Paint paint;
+    private Bitmap Monkey;
+    private float G=0.03f;
 
-    public Ball(float x, float y, float dx, float dy, float radius, Paint paint) {
+/* Ball(float x, float y, float dx, float dy, float radius, Paint paint,Bitmap monkey) {
         super(x, y);
         this.dx = dx;
         this.dy = dy;
         this.radius = radius;
         this.paint = paint;
+        //Monkey=BitmapFactory.decodeResource(getResource(),R.drawable.monkey);
+
+
+    }*/
+
+    public Ball(float x, float y, float dx, float dy, float radius,Bitmap monkey) {
+        super(x, y);
+        this.dx = dx;
+        this.dy = dy;
+        this.radius = radius;
+        this.Monkey=monkey;
+
+
+
     }
 
-    public boolean isHooked() {
+    public boolean isHooked()  {
+        G=0.03F;
         return hooked;
     }
     public float GetDy()
@@ -31,7 +50,8 @@ public class Ball extends Base {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(x, y, radius, paint);
+        //canvas.drawCircle(x, y, radius, paint);
+        canvas.drawBitmap(Monkey,x,y,paint);
     }
 
     public float GetX() { return x; }
@@ -47,7 +67,9 @@ public class Ball extends Base {
 
     public void applyGravity() {
         if (!hooked) {
-            dy += 0.02f; // Gravity constant
+            dy += G; // Gravity constant
+            G+=0.002F;
+
         }
     }
 
@@ -73,7 +95,6 @@ public class Ball extends Base {
         }
         if (y + radius >= screenHeight) {
             dy = -dy * 0.02f; // Bounce with some energy loss
-            //dy = -dy;
             y = screenHeight - radius;
         }
     }
