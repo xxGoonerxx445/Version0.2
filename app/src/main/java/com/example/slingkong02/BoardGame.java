@@ -34,7 +34,7 @@ public class BoardGame extends View {
     private boolean F,WasFirstDrag=false;
     private float startX, startY;
     private GameMoule GM;
-    private int Scoree;
+    private int Score;
 
     private Bitmap BackGround;
     private Rect destRect;
@@ -56,7 +56,6 @@ public class BoardGame extends View {
         p3.setColor(Color.BLACK); p3.setStrokeWidth(5); p3.setTextSize(75);
         GM = new GameMoule(new ArrayList<Hook>());
         GM.initDefaultHooks(p2, width, height);
-        Scoree=GM.CalcScore();
         animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
@@ -68,6 +67,7 @@ public class BoardGame extends View {
                     b.move();
                     if (GM.isCollide(b,StartYforShift,b.GetY())) {
                         F = true; // Hooked
+                        Score=GM.CalcScore();
 
                     }
 
@@ -116,7 +116,7 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
-        GM.ShowScore(canvas,p3,Scoree);
+        GM.ShowScore(canvas,p3,Score);
         p2.setColor(Color.RED);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);

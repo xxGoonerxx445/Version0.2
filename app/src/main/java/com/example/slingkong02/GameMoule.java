@@ -5,12 +5,13 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameMoule {
+public class GameMoule { // TODO: 2/25/2026 add death with custom dialog 
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
     //private int tmp;
     private float Distance;
+    private int score;
 
     public GameMoule(ArrayList<Hook> Hooks) {
         this.Hooks = Hooks;
@@ -134,9 +135,13 @@ public class GameMoule {
 
         }
     }
-    public int CalcScore()
-    {
-        return 10;
+    public int CalcScore() 
+    { // TODO: 2/25/2026 fix that it doesnt add score while going down. 
+        int initScore=0;
+        if(Distance>0)
+            score+=((int)Distance)/10;
+        //score=((int)Distance+score)/10;
+        return score;
     }
     public void ShowScore(Canvas canvas,Paint p,int score)
     {
