@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Random;
 
+// TODO: 25/02/2026 add customdialog(death) and fix score 
 public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
@@ -110,7 +111,7 @@ public class GameMoule {
 
 
 
-    // TODO: 26/01/2026 need to add moving animation in order to make this work 
+    // TODO: 26/01/2026 need to add moving animation in order to make this work (dont think it is a must)
     // TODO: 26/01/2026 recycling hooks, for now, may make it create new hooks in the future
     // TODO: 25/01/2026 spawnNewHooks: spawn new after a great distance has been made, also if the hooks moved under the screen delete them. 
     public void SpawnNewHooks(float screenHeight,Ball b,float screenWidth) //--bugs: if you hook on a hook that is close to the end of the screen, the hook bumps to the top of the screen with the ball
@@ -135,12 +136,12 @@ public class GameMoule {
 
         }
     }
-    public int CalcScore()
+    public int CalcScore() //not sure if it works well when going down. supposed to add score only when going up
     {
         int initScore=0;
-        //if(Distance<0)
-           // score+=(int)Distance;
-        score+=(int)Distance;
+        if(Distance>0)
+            score+=((int)Distance)/10;
+        //score=((int)Distance+score)/10;
         return score;
     }
     public void ShowScore(Canvas canvas,Paint p,int score)
