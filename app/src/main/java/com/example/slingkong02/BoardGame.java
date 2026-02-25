@@ -54,7 +54,7 @@ public class BoardGame extends View {
         height = ds.heightPixels;
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50,Monkey); // TODO: fix the image not being in the middle
+        b = new Ball(width / 2, height - 200, 0, 0, 150f,Monkey); // TODO: fix the image not being in the middle
         p2 = new Paint();
         p3=new Paint();
         p3.setColor(Color.BLACK); p3.setStrokeWidth(5); p3.setTextSize(75);

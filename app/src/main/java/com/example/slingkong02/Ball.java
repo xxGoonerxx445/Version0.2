@@ -80,8 +80,8 @@ public class Ball extends Base {
     public void setDy(float dy) { this.dy = dy; }
 
     public void setNewLocation(float x, float y) {
-        this.x = x;
-        this.y = y;
+        this.x = x - radius/2;
+        this.y = y - radius/2;
     }
 
     public boolean didusertouch(float tx, float ty) {
