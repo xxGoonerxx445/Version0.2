@@ -12,7 +12,7 @@ public class GameMoule {
     private Random random = new Random();
     //private int tmp;
     private float Distance;
-    private int score;
+    private int score;//
 
     public GameMoule(ArrayList<Hook> Hooks) {
         this.Hooks = Hooks;
