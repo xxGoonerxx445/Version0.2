@@ -11,6 +11,7 @@ public class GameMoule {
     private Random random = new Random();
     //private int tmp;
     private float Distance;
+    private int score;
 
     public GameMoule(ArrayList<Hook> Hooks) {
         this.Hooks = Hooks;
@@ -136,7 +137,11 @@ public class GameMoule {
     }
     public int CalcScore()
     {
-        return 10;
+        int initScore=0;
+        //if(Distance<0)
+           // score+=(int)Distance;
+        score+=(int)Distance;
+        return score;
     }
     public void ShowScore(Canvas canvas,Paint p,int score)
     {

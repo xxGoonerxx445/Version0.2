@@ -63,6 +63,7 @@ public class BoardGame extends View {
 
                 //GM.SpawnNewHooks(height,b,width); todo need to make  a new thread for this to work
                 if (!F) {
+                    GM.CalcScore();
                     if(WasFirstDrag)
                         b.applyGravity();
                     b.move();
@@ -79,18 +80,6 @@ public class BoardGame extends View {
                 return true;
             }
         });
-
-       /* SpawnHooksHandler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull android.os.Message msg) {
-                GM.SpawnNewHooks(height,b,width);
-                invalidate();
-                return true;
-            }
-        });*/
-
-
-
 
         threadGame.start();
         Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
@@ -121,10 +110,6 @@ public class BoardGame extends View {
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
-
-
-
-
 
 
     }
