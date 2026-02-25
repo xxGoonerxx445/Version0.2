@@ -11,7 +11,7 @@ public class GameMoule {
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
     //private int tmp;
-    private float Distance;
+    private float Distance;//
     private int score;//
 
     public GameMoule(ArrayList<Hook> Hooks) {
