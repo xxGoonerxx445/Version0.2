@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class BoardGame extends View {
     private Ball b;
     private float viewWidth, viewHeight;
+    private boolean isDialogShown = false;
     private Handler animationHandler,SpawnHooksHandler;
     private ThreadGame threadGame = new ThreadGame();
     private Paint p,p2,p3;
@@ -74,23 +75,19 @@ public class BoardGame extends View {
                     b.TouchedEdge(width, height);
                     //invalidate();
                 }
+                if (WasFirstDrag && b.GetY() + 50 >= height && !isDialogShown) //checks if the ball is closer to the bottom of the screen and the dialog was shown once to prevent the dialog opening a lot
+                {
+                    b.SetDeath();
+                    b.setDy(0); b.setDx(0);
+                    isDialogShown = true; // Prevent multiple dialogs
+                    CustomDialog customDialog = new CustomDialog(getContext(),BoardGame.this); //grant customdialog control also
+                    customDialog.show();
+                }
                 GM.SpawnNewHooks(height,b,width);
                 invalidate();
                 return true;
             }
         });
-
-       /* SpawnHooksHandler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(@NonNull android.os.Message msg) {
-                GM.SpawnNewHooks(height,b,width);
-                invalidate();
-                return true;
-            }
-        });*/
-
-
-
 
         threadGame.start();
         Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
@@ -121,11 +118,6 @@ public class BoardGame extends View {
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
         GM.DrawHooks(canvas);
-
-
-
-
-
 
     }
 
@@ -194,5 +186,22 @@ public class BoardGame extends View {
             }
         }
 
+    }
+
+    public void restartGame() {
+        // 1. Reset GameMoule (hooks, score, etc.)
+        GM.Restart(); // You'll need to implement the logic inside GameMoule.Restart()
+        GM.initDefaultHooks(p2, width, height);    Score = 0;
+
+        // 2. Reset Ball position
+        b = new Ball(width / 2, height - 200, 0, 0, 50, p);
+
+        // 3. Reset BoardGame flags
+        isDialogShown = false;
+        WasFirstDrag = false;
+        F = false;
+
+        // 4. Refresh view
+        invalidate();
     }
 }

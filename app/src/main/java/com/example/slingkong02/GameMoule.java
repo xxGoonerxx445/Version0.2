@@ -58,6 +58,8 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         return false;
     }
 
+
+
     public void ReActivate(Ball ball) {
         for (int i = 0; i < Hooks.size(); i++) {
             if (!(Hooks.get(i).isHooking(ball)))
@@ -156,5 +158,12 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         {
 
         }
+    }
+    public void Restart()
+    {
+        Hooks.clear();
+        score = 0;
+        Distance = 0;
+
     }
 }

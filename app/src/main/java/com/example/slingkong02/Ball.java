@@ -6,6 +6,7 @@ import android.graphics.Paint;
 public class Ball extends Base {
     private float dx, dy;
     private float radius;
+    private boolean Death=false;
     private boolean hooked = false;
     private Paint paint;
 
@@ -76,5 +77,13 @@ public class Ball extends Base {
             //dy = -dy;
             y = screenHeight - radius;
         }
+    }
+    public boolean isDeath()
+    {
+        return Death;
+    }
+    public void SetDeath()
+    {
+        Death=true;
     }
 }
