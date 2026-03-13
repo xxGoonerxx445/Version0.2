@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1066724202215",
+    "project_id": "slingkong-8d415",
+    "storage_bucket": "slingkong-8d415.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066724202215:android:49e5ad1dca896160f4f442",
+        "android_client_info": {
+          "package_name": "com.example.slingkong02"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7gmSKMZ2eU12YhxSnuWK2eeYluZ-aDHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
