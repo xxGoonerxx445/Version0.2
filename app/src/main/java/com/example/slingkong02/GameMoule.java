@@ -94,7 +94,7 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         for (int i = 0; i < Hooks.size(); i++) {
             if (Hooks.get(i).isHooking(b)) {
                 hookedHookIndex = i;
-                break; // Found the hooked hook, exit this loop
+                break; // Found the hooked hook, exit this loop.
             }
         }
 
