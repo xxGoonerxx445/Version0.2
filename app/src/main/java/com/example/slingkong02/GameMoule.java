@@ -5,11 +5,10 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameMoule { // TODO: 2/25/2026 add death with custom dialog 
+public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
-    //private int tmp;
     private float Distance;
     private int score;
 
@@ -17,14 +16,17 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         this.Hooks = Hooks;
     }
 
-    // TODO: 04/02/2026 make the initdefualt no spawn hooks too close to the edges of the screen 
+    /**
+     * Initializes hooks and ensures they are not too close to the screen edges.
+     */
     public void initDefaultHooks(Paint p, float width, float height) {
         Hooks.clear();
         // Start spawning hooks above the ball's starting position
         float currentY = height - 500; 
         
         for (int i = 0; i < 6; i++) {
-            float x = 75 + random.nextInt((int) width - 150);
+            // Margin of 100 pixels from each side to prevent clipping
+            float x = 100 + random.nextInt((int) width - 200);
             Hooks.add(new Hook(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200);
         }
@@ -36,9 +38,8 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         }
     }
 
-    public boolean isCollide(Ball b,float StartY,float Ball_location) {
+    public boolean isCollide(Ball b, float StartY, float Ball_location) {
         if (b.isHooked()) return true;
-
 
         for (int i = 0; i < Hooks.size(); i++) {
             if (Hooks.get(i).Collision(b.GetX(), b.GetY())) {
@@ -47,9 +48,17 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
                 b.setDy(0);
                 b.setHooked(true);
                 ReActivate(b);
-                Distance=Ball_location-StartY;
-                if(Distance<0)
-                    Distance=-Distance;
+
+                // Calculate vertical movement: Negative means moving UP in Android
+                float verticalMove = Ball_location - StartY;
+                
+                // Only store movement for score and shifting if we moved UP (verticalMove < 0)
+                if (verticalMove < 0) {
+                    Distance = Math.abs(verticalMove);
+                    score += CalcScoreFromDistance(Distance);
+                } else {
+                    Distance = 0; // Don't shift or add score if moving down
+                }
 
                 ShiftHooks(b);
                 return true;
@@ -58,112 +67,62 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
         return false;
     }
 
-
-
     public void ReActivate(Ball ball) {
         for (int i = 0; i < Hooks.size(); i++) {
             if (!(Hooks.get(i).isHooking(ball)))
                 Hooks.get(i).Activate();
         }
     }
-    //shiftHooks has a bug that bump the first hook to the top
-    /*public void ShiftHooks(Ball b) //make it so only the other hooks go down... after fixing that make them reappear again
-    {
-        int HookedHook=-1;
-        for(int i=0; i< Hooks.size(); i++) //line 72 fix- check which hook hooked him
-        {
-            if (Hooks.get(i).isHooking(b))
-                HookedHook = i;
-            break;
-        }
-            //--------------------------------------//
-        for(int i=0; i< Hooks.size(); i++)
-        {
-            Hooks.get(i).setY(Hooks.get(i).getY()+Distance*0.8f);
-            //b.setNewLocation(Hooks.get(tmp).getX(),Hooks.get(tmp).getY());
 
-        }
+    public void ShiftHooks(Ball b) {
+        if (Distance <= 0) return; // Only shift if there was upward movement
 
-
-
-    }*/
-    public void ShiftHooks(Ball b)
-    {
         int hookedHookIndex = -1;
-        // 1. Find the index of the hook the ball is currently hooked to (FIRST)
         for (int i = 0; i < Hooks.size(); i++) {
             if (Hooks.get(i).isHooking(b)) {
                 hookedHookIndex = i;
-                break; // Found the hooked hook, exit this loop.
+                break;
             }
         }
 
-        // 2. Shift all hooks (SECOND)
+        // Shift all hooks down to create "scrolling" effect
         for (int i = 0; i < Hooks.size(); i++) {
             Hooks.get(i).setY(Hooks.get(i).getY() + Distance * 0.9f);
         }
 
-        // 3. If the ball is hooked, update its position to match the new position of the hooked hook (LAST)
         if (hookedHookIndex != -1) {
             Hook hookedHook = Hooks.get(hookedHookIndex);
             b.setNewLocation(hookedHook.getX(), hookedHook.getY());
         }
     }
 
-
-
-    // TODO: 26/01/2026 need to add moving animation in order to make this work 
-    // TODO: 26/01/2026 recycling hooks, for now, may make it create new hooks in the future
-    // TODO: 25/01/2026 spawnNewHooks: spawn new after a great distance has been made, also if the hooks moved under the screen delete them. 
-    public void SpawnNewHooks(float screenHeight,Ball b,float screenWidth) //--bugs: if you hook on a hook that is close to the end of the screen, the hook bumps to the top of the screen with the ball
-    {
-        for(int i=0; i<Hooks.size(); i++)
-        {
-            if(Hooks.get(i).getY()>screenHeight)
-            {
-                //give number between 0 and the location of ball y(so above ball)
-                float y_forrecycle = random.nextInt((int) b.getY()-200);
-                float x_forrecycle = random.nextInt((int) screenWidth); //between 0 and width
-                for(int j=0; j<Hooks.size(); j++)
-                {
-                    if(i!=j&&Hooks.get(j).getX()>x_forrecycle-75 && Hooks.get(j).getX()<x_forrecycle+75)
-                        x_forrecycle = random.nextInt((int) screenWidth);
-
-                    if(i!=j&&Hooks.get(j).getY()>y_forrecycle-75 && Hooks.get(j).getY()<y_forrecycle+75)
-                        y_forrecycle = random.nextInt((int) b.getY()-200);
-                }
-                Hooks.get(i).SetPosition(x_forrecycle,y_forrecycle);
+    public void SpawnNewHooks(float screenHeight, Ball b, float screenWidth) {
+        for (int i = 0; i < Hooks.size(); i++) {
+            if (Hooks.get(i).getY() > screenHeight) {
+                // Recycle hooks to appear at the top
+                float y_forrecycle = random.nextInt((int) Math.max(100, b.getY() - 400));
+                float x_forrecycle = 100 + random.nextInt((int) screenWidth - 200);
+                Hooks.get(i).SetPosition(x_forrecycle, y_forrecycle);
             }
-
         }
     }
-    public int CalcScore() 
-    { // TODO: 2/25/2026 fix that it doesnt add score while going down. 
-        int initScore=0;
-        if(Distance>0)
-            score+=((int)Distance)/100;
-        //score=((int)Distance+score)/10;
+
+    private int CalcScoreFromDistance(float dist) {
+        // Custom score logic: e.g., 1 point for every 100 pixels moved up
+        return (int) (dist / 100);
+    }
+
+    public int CalcScore() {
         return score;
     }
-    public void ShowScore(Canvas canvas,Paint p,int score)
-    {
-        canvas.drawText("Score= "+score,5,150,p);
+
+    public void ShowScore(Canvas canvas, Paint p, int currentScore) {
+        canvas.drawText("Score: " + currentScore, 50, 150, p);
     }
 
-    public void FixedShiftHooks(Ball b,float distance)
-    {
-
-
-        for(int i=0; i< Hooks.size(); i++)
-        {
-
-        }
-    }
-    public void Restart()
-    {
+    public void Restart() {
         Hooks.clear();
         score = 0;
         Distance = 0;
-
     }
 }

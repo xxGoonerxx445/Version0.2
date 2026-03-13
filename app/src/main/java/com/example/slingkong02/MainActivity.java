@@ -12,16 +12,24 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     private TabLayout tabLayout;
+    public static ArrayList<Record> records;
+    FB fb;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // שימוש ב-Layout הרגיל ללא EdgeToEdge בשלב זה למניעת מסך שחור
         setContentView(R.layout.activity_main);
+        initialization();
+
 
         frameLayout = findViewById(R.id.frameLayout);
         tabLayout = findViewById(R.id.tabLayout);
@@ -63,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
         if(currentUser != null){
             moveToMenu();
         }
+    }
+    private void initialization() {
+        // initialize
+
+        //btnGame = findViewById(R.id.btnGame);
+        //btnGame.setOnClickListener(this);
+
+        records = new ArrayList<>();
+        fb = FB.getInstance();
     }
 
     private void moveToMenu() {

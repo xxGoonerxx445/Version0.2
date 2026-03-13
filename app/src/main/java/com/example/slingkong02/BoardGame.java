@@ -6,16 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowMetrics;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,22 +21,19 @@ public class BoardGame extends View {
     private Ball b;
     private float viewWidth, viewHeight;
     private boolean isDialogShown = false;
-    private Handler animationHandler,SpawnHooksHandler;
+    private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p,p2,p3;
-    private float dx;
+    private Paint p, p2, p3;
+    private float dx, dy;
     private float StartYforShift;
-    private float dy;
-    private boolean F,WasFirstDrag=false;
+    private boolean F, WasFirstDrag = false;
     private float startX, startY;
     private GameMoule GM;
     private int Score;
 
     private Bitmap BackGround;
     private Rect destRect;
-    private int width,height;
-
-
+    private int width, height;
 
     public BoardGame(Context context) {
         super(context);
@@ -49,51 +41,59 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
+        
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
+        b = new Ball(width / 2, height - 200, 0, 0, 50, p);
+        
+        // הגדרת ה-Paint של הווים (Hooks)
         p2 = new Paint();
-        p3=new Paint();
-        p3.setColor(Color.BLACK); p3.setStrokeWidth(5); p3.setTextSize(75);
+        p2.setColor(Color.BLACK); // צבע המסגרת
+        p2.setStyle(Paint.Style.STROKE); // מילוי שקוף (רק מסגרת)
+        p2.setStrokeWidth(5); // עובי הקו
+        
+        p3 = new Paint();
+        p3.setColor(Color.BLACK);
+        p3.setStrokeWidth(5);
+        p3.setTextSize(75);
+        
         GM = new GameMoule(new ArrayList<Hook>());
         GM.initDefaultHooks(p2, width, height);
+
         animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
+                if (isDialogShown) return true;
 
-                //GM.SpawnNewHooks(height,b,width); todo need to make  a new thread for this to work
                 if (!F) {
-                    if(WasFirstDrag)
-                        b.applyGravity();
+                    if (WasFirstDrag) b.applyGravity();
                     b.move();
-                    if (GM.isCollide(b,StartYforShift,b.GetY())) {
-                        F = true; // Hooked
-                        Score=GM.CalcScore();
-
+                    if (GM.isCollide(b, StartYforShift, b.GetY())) {
+                        F = true;
+                        Score = GM.CalcScore();
                     }
-
                     b.TouchedEdge(width, height);
-                    //invalidate();
                 }
-                if (WasFirstDrag && b.GetY() + 50 >= height && !isDialogShown) //checks if the ball is closer to the bottom of the screen and the dialog was shown once to prevent the dialog opening a lot
-                {
+
+                if (WasFirstDrag && b.GetY() + 50 >= height && !isDialogShown) {
                     b.SetDeath();
-                    b.setDy(0); b.setDx(0);
-                    isDialogShown = true; // Prevent multiple dialogs
-                    CustomDialog customDialog = new CustomDialog(getContext(),BoardGame.this); //grant customdialog control also
+                    b.setDy(0);
+                    b.setDx(0);
+                    isDialogShown = true;
+                    CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
                     customDialog.show();
                 }
-                GM.SpawnNewHooks(height,b,width);
+                GM.SpawnNewHooks(height, b, width);
                 invalidate();
                 return true;
             }
         });
 
         threadGame.start();
-        Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
+    }
 
-
-
+    public int getScore() {
+        return Score;
     }
 
     @Override
@@ -113,40 +113,30 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
-        GM.ShowScore(canvas,p3,Score);
-        p2.setColor(Color.RED);
-        p2.setStyle(Paint.Style.STROKE);
-        p2.setStrokeWidth(5);
+        GM.ShowScore(canvas, p3, Score);
         GM.DrawHooks(canvas);
-
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (isDialogShown) return false;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(b.didusertouch(event.getX(), event.getY()) &&b.isHooked()||WasFirstDrag==false) // TODO: 2/20/2026 do that he can only drag if hooked, not in the air
-                {
-                    b.setHooked(false);   //  release from hook
-                    F=true;
+                if (b.didusertouch(event.getX(), event.getY()) && (b.isHooked() || !WasFirstDrag)) {
+                    b.setHooked(false);
+                    F = true;
                     startX = b.GetX();
                     startY = b.GetY();
-                    StartYforShift=startY;
-
-
+                    StartYforShift = startY;
                 }
-
                 break;
             case MotionEvent.ACTION_MOVE:
-
-                if (F && !b.isHooked()) { // Only allow dragging if we touched the ball
+                if (F && !b.isHooked()) {
                     float touchX = event.getX();
                     float touchY = event.getY();
                     dx = (touchX - startX);
                     dy = (touchY - startY);
-
-                    // Limit drag distance
                     if ((dx * dx) + (dy * dy) < 300 * 300) {
                         b.setNewLocation(touchX, touchY);
                     }
@@ -155,53 +145,38 @@ public class BoardGame extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 if (F && !b.isHooked()) {
-                    // Launch ball in opposite direction of drag
                     b.setDx(-(event.getX() - startX) / 10f);
                     b.setDy(-(event.getY() - startY) / 10f);
-                    F = false; // Start movement
-                    WasFirstDrag=true;
+                    F = false;
+                    WasFirstDrag = true;
                 }
-
-
-
                 break;
         }
         return true;
     }
 
-
-
-    private class ThreadGame extends Thread{
+    private class ThreadGame extends Thread {
         @Override
         public void run() {
-            super.run();
-            while (true)
-            {
+            while (!isInterrupted()) {
                 try {
                     sleep(16);
                     animationHandler.sendEmptyMessage(0);
                 } catch (InterruptedException e) {
-                   break;
+                    break;
                 }
             }
         }
-
     }
 
     public void restartGame() {
-        // 1. Reset GameMoule (hooks, score, etc.)
-        GM.Restart(); // You'll need to implement the logic inside GameMoule.Restart()
-        GM.initDefaultHooks(p2, width, height);    Score = 0;
-
-        // 2. Reset Ball position
+        GM.Restart();
+        GM.initDefaultHooks(p2, width, height);
+        Score = 0;
         b = new Ball(width / 2, height - 200, 0, 0, 50, p);
-
-        // 3. Reset BoardGame flags
         isDialogShown = false;
         WasFirstDrag = false;
         F = false;
-
-        // 4. Refresh view
         invalidate();
     }
 }
