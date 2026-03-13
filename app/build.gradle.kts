@@ -1,17 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "com.example.slingkong02"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 35 // חזרה ל-35 כדי להתאים למה שמותקן אצלך
 
     defaultConfig {
         applicationId = "com.example.slingkong02"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -38,6 +37,12 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.database)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

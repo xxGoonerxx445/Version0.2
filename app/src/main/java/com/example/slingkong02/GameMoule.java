@@ -141,7 +141,7 @@ public class GameMoule { // TODO: 2/25/2026 add death with custom dialog
     { // TODO: 2/25/2026 fix that it doesnt add score while going down. 
         int initScore=0;
         if(Distance>0)
-            score+=((int)Distance)/10;
+            score+=((int)Distance)/100;
         //score=((int)Distance+score)/10;
         return score;
     }

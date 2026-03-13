@@ -2,6 +2,7 @@ package com.example.slingkong02;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,12 +35,15 @@ public class CustomDialog extends Dialog implements View.OnClickListener
         {
             boardGame.restartGame();
             dismiss();
-            //here
+
         }
         if(v == btnNo)
         {
             dismiss(); // TODO: 3/4/2026 add something later like going back to menu
-            //here
+            Intent intent=new Intent(context,MenuActivity.class);
+            context.startActivity(intent);
+
+
         }
 
     }
