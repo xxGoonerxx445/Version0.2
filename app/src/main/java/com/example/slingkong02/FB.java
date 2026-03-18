@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class FB {
     private static FB instance;
     private FirebaseDatabase database;
-    private ArrayList<Record> recordsList = new ArrayList<>();
+    //private ArrayList<Record> recordsList = new ArrayList<>();
 
     private FB() {
         database = FirebaseDatabase.getInstance();
@@ -33,11 +33,11 @@ public class FB {
         myQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                recordsList.clear();
+                MainActivity.records.clear();
                 for(DataSnapshot userSnapshot : snapshot.getChildren()) {
                     Record currentRecord = userSnapshot.getValue(Record.class);
                     if (currentRecord != null) {
-                        recordsList.add(0, currentRecord);
+                        MainActivity.records.add(0, currentRecord);
                     }
                 }
             }
@@ -56,7 +56,7 @@ public class FB {
         if (uid == null) return;
 
         // 1. Get user name from database
-        database.getReference("users").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("records").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot nameSnapshot) {
                 String userName = nameSnapshot.getValue(String.class);
@@ -89,6 +89,6 @@ public class FB {
     }
 
     public ArrayList<Record> getRecords() {
-        return recordsList;
+        return MainActivity.records;
     }
 }

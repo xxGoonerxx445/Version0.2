@@ -51,6 +51,13 @@ public class MenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+        ScoreBoardbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { Intent i=new Intent(MenuActivity.this,RecordsActivity.class);
+                startActivity(i);
+            }
+        });
+
 
 
 

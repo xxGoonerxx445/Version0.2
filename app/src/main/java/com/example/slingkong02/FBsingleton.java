@@ -1,5 +1,7 @@
 package com.example.slingkong02;
 
+import android.icu.text.Transliterator;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,9 +37,18 @@ public class FBsingleton {
         // בדיקה שיש משתמש מחובר לפני ניסיון כתיבה
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             // יצירת נתיב בתוך ה-Database תחת users -> UID -> name
-            DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/name");
+            //DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/name");
             // שמירת הערך
-            myRef.setValue(name);
+           /* myRef.setValue(name);
+            myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/score");
+            // שמירת הערך
+            myRef.setValue(0);*/
+            DatabaseReference myRef = database.getReference("records/" + FirebaseAuth.getInstance().getUid());
+            Record record = new Record(name, 0);
+            myRef.setValue(record);
+
+
+
         }
     }
 }
