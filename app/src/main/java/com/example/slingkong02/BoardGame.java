@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -19,13 +18,11 @@ import java.util.ArrayList;
 
 public class BoardGame extends View {
     private Ball b;
-    private float viewWidth, viewHeight;
     private boolean isDialogShown = false;
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
     private Paint p, p2, p3;
     private float dx, dy;
-    private float StartYforShift;
     private boolean F, WasFirstDrag = false;
     private float startX, startY;
     private GameMoule GM;
@@ -46,11 +43,10 @@ public class BoardGame extends View {
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p);
         
-        // הגדרת ה-Paint של הווים (Hooks)
         p2 = new Paint();
-        p2.setColor(Color.BLACK); // צבע המסגרת
-        p2.setStyle(Paint.Style.STROKE); // מילוי שקוף (רק מסגרת)
-        p2.setStrokeWidth(5); // עובי הקו
+        p2.setColor(Color.BLACK);
+        p2.setStyle(Paint.Style.STROKE);
+        p2.setStrokeWidth(5);
         
         p3 = new Paint();
         p3.setColor(Color.BLACK);
@@ -68,12 +64,19 @@ public class BoardGame extends View {
                 if (!F) {
                     if (WasFirstDrag) b.applyGravity();
                     b.move();
-                    if (GM.isCollide(b, StartYforShift, b.GetY())) {
+                    
+                    // --- כאן הוספנו את פונקציית הגלילה החדשה ---
+                    GM.updateScrolling(b, height);
+                    
+                    // עדכון קריאה ל-isCollide (ללא פרמטרים מיותרים)
+                    if (GM.isCollide(b)) {
                         F = true;
-                        Score = GM.CalcScore();
                     }
                     b.TouchedEdge(width, height);
                 }
+
+                // עדכון הניקוד מה-GM בכל פריים
+                Score = GM.CalcScore();
 
                 if (WasFirstDrag && b.GetY() + 50 >= height && !isDialogShown) {
                     b.SetDeath();
@@ -83,7 +86,10 @@ public class BoardGame extends View {
                     CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
                     customDialog.show();
                 }
-                GM.SpawnNewHooks(height, b, width);
+                
+                // עדכון קריאה ל-SpawnNewHooks (ללא פרמטר b)
+                GM.SpawnNewHooks(height, width);
+                
                 invalidate();
                 return true;
             }
@@ -99,8 +105,6 @@ public class BoardGame extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewWidth = w;
-        viewHeight = h;
         destRect = new Rect(0, 0, w, h);
     }
 
@@ -128,7 +132,6 @@ public class BoardGame extends View {
                     F = true;
                     startX = b.GetX();
                     startY = b.GetY();
-                    StartYforShift = startY;
                 }
                 break;
             case MotionEvent.ACTION_MOVE:

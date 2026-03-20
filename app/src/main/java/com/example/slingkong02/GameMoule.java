@@ -9,23 +9,17 @@ public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private Random random = new Random();
-    private float Distance;
+    private float totalDistanceMoved = 0; // Tracks total progress for score
     private int score;
 
     public GameMoule(ArrayList<Hook> Hooks) {
         this.Hooks = Hooks;
     }
 
-    /**
-     * Initializes hooks and ensures they are not too close to the screen edges.
-     */
     public void initDefaultHooks(Paint p, float width, float height) {
         Hooks.clear();
-        // Start spawning hooks above the ball's starting position
         float currentY = height - 500; 
-        
         for (int i = 0; i < 6; i++) {
-            // Margin of 100 pixels from each side to prevent clipping
             float x = 100 + random.nextInt((int) width - 200);
             Hooks.add(new Hook(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200);
@@ -33,34 +27,45 @@ public class GameMoule {
     }
 
     public void DrawHooks(Canvas canvas) {
-        for (int i = 0; i < Hooks.size(); i++) {
-            Hooks.get(i).draw(canvas);
+        for (Hook hook : Hooks) {
+            hook.draw(canvas);
         }
     }
 
-    public boolean isCollide(Ball b, float StartY, float Ball_location) {
+    /**
+     * The heart of the scrolling logic. 
+     * If the ball goes above 40% of the screen, we move the world down instead.
+     */
+    public void updateScrolling(Ball b, float screenHeight) {
+        float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
+
+        if (b.GetY() < scrollThreshold) {
+            float shiftDistance = scrollThreshold - b.GetY();
+            
+            // Move ball back to the threshold so it stays visible
+            b.setY(scrollThreshold);
+            
+            // Move all hooks down
+            for (Hook hook : Hooks) {
+                hook.setY(hook.getY() + shiftDistance);
+            }
+            
+            // Update total distance and score based on actual movement
+            totalDistanceMoved += shiftDistance;
+            score = (int) (totalDistanceMoved / 50); // 1 point per 50 pixels climbed
+        }
+    }
+
+    public boolean isCollide(Ball b) {
         if (b.isHooked()) return true;
 
-        for (int i = 0; i < Hooks.size(); i++) {
-            if (Hooks.get(i).Collision(b.GetX(), b.GetY())) {
-                b.setNewLocation(Hooks.get(i).GetPostionX(), Hooks.get(i).GetPostionY());
+        for (Hook hook : Hooks) {
+            if (hook.Collision(b.GetX(), b.GetY())) {
+                b.setNewLocation(hook.GetPostionX(), hook.GetPostionY());
                 b.setDx(0);
                 b.setDy(0);
                 b.setHooked(true);
                 ReActivate(b);
-
-                // Calculate vertical movement: Negative means moving UP in Android
-                float verticalMove = Ball_location - StartY;
-                
-                // Only store movement for score and shifting if we moved UP (verticalMove < 0)
-                if (verticalMove < 0) {
-                    Distance = Math.abs(verticalMove);
-                    score += CalcScoreFromDistance(Distance);
-                } else {
-                    Distance = 0; // Don't shift or add score if moving down
-                }
-
-                ShiftHooks(b);
                 return true;
             }
         }
@@ -68,48 +73,31 @@ public class GameMoule {
     }
 
     public void ReActivate(Ball ball) {
-        for (int i = 0; i < Hooks.size(); i++) {
-            if (!(Hooks.get(i).isHooking(ball)))
-                Hooks.get(i).Activate();
+        for (Hook hook : Hooks) {
+            if (!(hook.isHooking(ball)))
+                hook.Activate();
         }
     }
 
-    public void ShiftHooks(Ball b) {
-        if (Distance <= 0) return; // Only shift if there was upward movement
+    /**
+     * Recycles hooks that fell off the bottom of the screen to the top.
+     */
+    public void SpawnNewHooks(float screenHeight, float screenWidth) {
+        for (Hook hook : Hooks) {
+            if (hook.getY() > screenHeight) {
+                // Find the highest hook to place the recycled one even higher
+                float highestY = screenHeight;
+                for (Hook h : Hooks) {
+                    if (h.getY() < highestY) highestY = h.getY();
+                }
 
-        int hookedHookIndex = -1;
-        for (int i = 0; i < Hooks.size(); i++) {
-            if (Hooks.get(i).isHooking(b)) {
-                hookedHookIndex = i;
-                break;
+                float newX = 100 + random.nextInt((int) screenWidth - 200);
+                float newY = highestY - (250 + random.nextInt(250));
+                
+                hook.SetPosition(newX, newY);
+                hook.Activate();
             }
         }
-
-        // Shift all hooks down to create "scrolling" effect
-        for (int i = 0; i < Hooks.size(); i++) {
-            Hooks.get(i).setY(Hooks.get(i).getY() + Distance * 0.9f);
-        }
-
-        if (hookedHookIndex != -1) {
-            Hook hookedHook = Hooks.get(hookedHookIndex);
-            b.setNewLocation(hookedHook.getX(), hookedHook.getY());
-        }
-    }
-
-    public void SpawnNewHooks(float screenHeight, Ball b, float screenWidth) {
-        for (int i = 0; i < Hooks.size(); i++) {
-            if (Hooks.get(i).getY() > screenHeight) {
-                // Recycle hooks to appear at the top
-                float y_forrecycle = random.nextInt((int) Math.max(100, b.getY() - 400));
-                float x_forrecycle = 100 + random.nextInt((int) screenWidth - 200);
-                Hooks.get(i).SetPosition(x_forrecycle, y_forrecycle);
-            }
-        }
-    }
-
-    private int CalcScoreFromDistance(float dist) {
-        // Custom score logic: e.g., 1 point for every 100 pixels moved up
-        return (int) (dist / 100);
     }
 
     public int CalcScore() {
@@ -123,6 +111,6 @@ public class GameMoule {
     public void Restart() {
         Hooks.clear();
         score = 0;
-        Distance = 0;
+        totalDistanceMoved = 0;
     }
 }
