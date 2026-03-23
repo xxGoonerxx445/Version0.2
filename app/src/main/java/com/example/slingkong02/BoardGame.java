@@ -78,7 +78,7 @@ public class BoardGame extends View {
                 // עדכון הניקוד מה-GM בכל פריים
                 Score = GM.CalcScore();
 
-                if (WasFirstDrag && b.GetY() + 50 >= height && !isDialogShown) {
+                if (WasFirstDrag && b.getY() + 50 >= height && !isDialogShown) {
                     b.SetDeath();
                     b.setDy(0);
                     b.setDx(0);
@@ -130,8 +130,9 @@ public class BoardGame extends View {
                 if (b.didusertouch(event.getX(), event.getY()) && (b.isHooked() || !WasFirstDrag)) {
                     b.setHooked(false);
                     F = true;
-                    startX = b.GetX();
-                    startY = b.GetY();
+                    //startX = b.GetX();
+                    startX=b.getX();
+                    startY = b.getY();
                 }
                 break;
             case MotionEvent.ACTION_MOVE:

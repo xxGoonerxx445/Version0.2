@@ -35,8 +35,6 @@ public class Ball extends Base {
         canvas.drawCircle(x, y, radius, paint);
     }
 
-    public float GetX() { return x; }
-    public float GetY() { return y; }
     public float GetDx() { return dx; }
     //public float GetDy() { return dy; }
 

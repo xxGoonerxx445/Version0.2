@@ -36,11 +36,11 @@ public class GameMoule {
      * The heart of the scrolling logic. 
      * If the ball goes above 40% of the screen, we move the world down instead.
      */
-    public void updateScrolling(Ball b, float screenHeight) {
+    public void updateScrolling(Ball b, float screenHeight) { // TODO: 3/20/2026 לתקן את הסלידה, כנראה בצורה שדומה לזאת של הgemini אבל שבאצת יעבוד 
         float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
 
-        if (b.GetY() < scrollThreshold) {
-            float shiftDistance = scrollThreshold - b.GetY();
+        if (b.getY() < scrollThreshold) {
+            float shiftDistance = scrollThreshold - b.getY();
             
             // Move ball back to the threshold so it stays visible
             b.setY(scrollThreshold);
@@ -60,8 +60,9 @@ public class GameMoule {
         if (b.isHooked()) return true;
 
         for (Hook hook : Hooks) {
-            if (hook.Collision(b.GetX(), b.GetY())) {
-                b.setNewLocation(hook.GetPostionX(), hook.GetPostionY());
+            if (hook.Collision(b.getX(), b.getY())) {
+                //b.setNewLocation(hook.GetPostionX(), hook.GetPostionY());
+                b.setNewLocation(hook.getX(), hook.getY());
                 b.setDx(0);
                 b.setDy(0);
                 b.setHooked(true);
