@@ -8,12 +8,14 @@ import java.util.Random;
 public class GameMoule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
+    private ArrayList<Saw> Saws = new ArrayList<Saw>();
     private Random random = new Random();
     private float totalDistanceMoved = 0; // Tracks total progress for score
     private int score;
 
-    public GameMoule(ArrayList<Hook> Hooks) {
+    public GameMoule(ArrayList<Hook> Hooks,ArrayList<Saw> Saws) {
         this.Hooks = Hooks;
+        this.Saws=Saws;
     }
 
     public void initDefaultHooks(Paint p, float width, float height) {
@@ -26,17 +28,34 @@ public class GameMoule {
         }
     }
 
-    public void DrawHooks(Canvas canvas) {
-        for (Hook hook : Hooks) {
-            hook.draw(canvas);
+    public void initDefaultSaws(Paint p, float width, float height) {
+        // TODO: 3/25/2026 need to check that it doesnt spawn next to a hook or close to it
+        Saws.clear();
+        float currentY = height - 500;
+        for (int i = 0; i < 2; i++) {
+            float x = 100 + random.nextInt((int) width - 200);
+            Saws.add(new Saw(x, currentY, 75, p));
+            currentY -= 300 + random.nextInt(200);
         }
     }
+
+    public void DrawHooksAndSaws(Canvas canvas) {
+        for (Hook hook : Hooks) {
+            hook.draw(canvas);
+
+        }
+        for (Saw saw : Saws) {
+            saw.draw(canvas);
+        }
+    }
+
 
     /**
      * The heart of the scrolling logic. 
      * If the ball goes above 40% of the screen, we move the world down instead.
      */
     public void updateScrolling(Ball b, float screenHeight) { // TODO: 3/20/2026 לתקן את הסלידה, כנראה בצורה שדומה לזאת של הgemini אבל שבאצת יעבוד 
+        // TODO: 3/25/2026 make it that saws don't act like hooks in movement(don't "climb up") 
         float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
 
         if (b.getY() < scrollThreshold) {
@@ -61,12 +80,23 @@ public class GameMoule {
 
         for (Hook hook : Hooks) {
             if (hook.Collision(b.getX(), b.getY())) {
-                //b.setNewLocation(hook.GetPostionX(), hook.GetPostionY());
                 b.setNewLocation(hook.getX(), hook.getY());
                 b.setDx(0);
                 b.setDy(0);
                 b.setHooked(true);
                 ReActivate(b);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isCollideSaws(Ball b) {
+
+        for (Saw saw : Saws) {
+            if (saw.Collision(b.getX(), b.getY())) {
+                b.setDx(0);
+                b.setDy(0);
                 return true;
             }
         }
@@ -97,6 +127,25 @@ public class GameMoule {
                 
                 hook.SetPosition(newX, newY);
                 hook.Activate();
+            }
+        }
+    }
+
+    public void SpawnNewSaws(float screenHeight, float screenWidth) {
+        // TODO: 3/25/2026 need to check that it doesnt spawn next to a hook or close to it
+        for (Saw saw : Saws) {
+            if (saw.getY() > screenHeight) {
+                // Find the highest hook to place the recycled one even higher
+                float highestY = screenHeight;
+                for (Saw s : Saws) {
+                    if (s.getY() < highestY) highestY = s.getY();
+                }
+
+                float newX = 100 + random.nextInt((int) screenWidth - 200);
+                float newY = highestY - (250 + random.nextInt(250));
+
+                saw.SetPosition(newX, newY);
+
             }
         }
     }

@@ -21,7 +21,7 @@ public class BoardGame extends View {
     private boolean isDialogShown = false;
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p, p2, p3;
+    private Paint p, p2, p3,p4;
     private float dx, dy;
     private boolean F, WasFirstDrag = false;
     private float startX, startY;
@@ -52,9 +52,13 @@ public class BoardGame extends View {
         p3.setColor(Color.BLACK);
         p3.setStrokeWidth(5);
         p3.setTextSize(75);
+        p4=new Paint();
+        p4.setColor(Color.RED);
+
         
-        GM = new GameMoule(new ArrayList<Hook>());
+        GM = new GameMoule(new ArrayList<Hook>(), new ArrayList<Saw>());
         GM.initDefaultHooks(p2, width, height);
+        GM.initDefaultSaws(p4, width, height);
 
         animationHandler = new Handler(new Handler.Callback() {
             @Override
@@ -72,6 +76,17 @@ public class BoardGame extends View {
                     if (GM.isCollide(b)) {
                         F = true;
                     }
+                    if(GM.isCollideSaws(b))// TODO: 3/25/2026 check collison with saws
+                    {
+                        F=true;
+                        b.SetDeath();
+                        b.setDy(0);
+                        b.setDx(0);
+                        isDialogShown = true;
+                        CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
+                        customDialog.show();
+                    }
+
                     b.TouchedEdge(width, height);
                 }
 
@@ -87,8 +102,9 @@ public class BoardGame extends View {
                     customDialog.show();
                 }
                 
-                // עדכון קריאה ל-SpawnNewHooks (ללא פרמטר b)
+                // עדכון קריאה ל-SpawnNewHooksו SpawnNewSaws (ללא פרמטר b)
                 GM.SpawnNewHooks(height, width);
+                GM.SpawnNewSaws(height, width);
                 
                 invalidate();
                 return true;
@@ -118,7 +134,7 @@ public class BoardGame extends View {
         }
         b.draw(canvas);
         GM.ShowScore(canvas, p3, Score);
-        GM.DrawHooks(canvas);
+        GM.DrawHooksAndSaws(canvas);
     }
 
     @Override
@@ -176,6 +192,7 @@ public class BoardGame extends View {
     public void restartGame() {
         GM.Restart();
         GM.initDefaultHooks(p2, width, height);
+        GM.initDefaultSaws(p4, width, height);
         Score = 0;
         b = new Ball(width / 2, height - 200, 0, 0, 50, p);
         isDialogShown = false;
