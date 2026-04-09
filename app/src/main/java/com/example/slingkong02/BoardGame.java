@@ -75,6 +75,7 @@ public class BoardGame extends View {
                     // עדכון קריאה ל-isCollide (ללא פרמטרים מיותרים)
                     if (GM.isCollide(b)) {
                         F = true;
+
                     }
                     if(GM.isCollideSaws(b))// TODO: 3/25/2026 check collison with saws
                     {

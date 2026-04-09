@@ -55,7 +55,7 @@ public class GameMoule {
      * If the ball goes above 40% of the screen, we move the world down instead.
      */
     public void updateScrolling(Ball b, float screenHeight) { // TODO: 3/20/2026 לתקן את הסלידה, כנראה בצורה שדומה לזאת של הgemini אבל שבאצת יעבוד 
-        // TODO: 3/25/2026 make it that saws don't act like hooks in movement(don't "climb up") 
+        // TODO: 3/25/2026 make it so that saws don't act like hooks in movement(don't "climb up")
         float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
 
         if (b.getY() < scrollThreshold) {
@@ -149,6 +149,9 @@ public class GameMoule {
             }
         }
     }
+
+
+
 
     public int CalcScore() {
         return score;
