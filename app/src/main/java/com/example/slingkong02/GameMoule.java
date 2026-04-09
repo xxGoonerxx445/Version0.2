@@ -20,20 +20,28 @@ public class GameMoule {
 
     public void initDefaultHooks(Paint p, float width, float height) {
         Hooks.clear();
-        float currentY = height - 500; 
+        float currentY = height - 500;
         for (int i = 0; i < 6; i++) {
-            float x = 100 + random.nextInt((int) width - 200);
+            //float x = 100 + random.nextInt((int) width - 200);
+            float x = 125 + random.nextInt((int) width - 225);
             Hooks.add(new Hook(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200);
         }
     }
 
     public void initDefaultSaws(Paint p, float width, float height) {
-        // TODO: 3/25/2026 need to check that it doesnt spawn next to a hook or close to it
         Saws.clear();
         float currentY = height - 500;
         for (int i = 0; i < 2; i++) {
-            float x = 100 + random.nextInt((int) width - 200);
+            float x;
+            int attempts = 0;
+            // Keep re-rolling X until the saw is far enough from all hooks,
+            // or give up after 20 tries to avoid an infinite loop
+            do {
+                x = 100 + random.nextInt((int) width - 200);
+                attempts++;
+            } while (isTooCloseToAnyHook(x, currentY) && attempts < 20);
+
             Saws.add(new Saw(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200);
         }
@@ -51,27 +59,34 @@ public class GameMoule {
 
 
     /**
-     * The heart of the scrolling logic. 
+     * The heart of the scrolling logic.
      * If the ball goes above 40% of the screen, we move the world down instead.
      */
-    public void updateScrolling(Ball b, float screenHeight) { // TODO: 3/20/2026 לתקן את הסלידה, כנראה בצורה שדומה לזאת של הgemini אבל שבאצת יעבוד 
-        // TODO: 3/25/2026 make it so that saws don't act like hooks in movement(don't "climb up")
+    public void updateScrolling(Ball b, float screenHeight) {
         float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
 
         if (b.getY() < scrollThreshold) {
             float shiftDistance = scrollThreshold - b.getY();
-            
+
             // Move ball back to the threshold so it stays visible
             b.setY(scrollThreshold);
-            
+
             // Move all hooks down
             for (Hook hook : Hooks) {
                 hook.setY(hook.getY() + shiftDistance);
             }
-            
+
+            // Move all saws down with the world so they don't stay frozen in place
+            // while the player climbs. Unlike hooks, saws are NOT recycled back to
+            // the top here — once they fall off the bottom, SpawnNewSaws respawns them
+            // above the player instead.
+            for (Saw saw : Saws) {
+                saw.setY(saw.getY() + shiftDistance);
+            }
+
             // Update total distance and score based on actual movement
             totalDistanceMoved += shiftDistance;
-            score = (int) (totalDistanceMoved / 50); // 1 point per 50 pixels climbed
+            score = (int) (totalDistanceMoved / 100); // 1 point per 100 pixels climbed
         }
     }
 
@@ -122,35 +137,62 @@ public class GameMoule {
                     if (h.getY() < highestY) highestY = h.getY();
                 }
 
-                float newX = 100 + random.nextInt((int) screenWidth - 200);
+                //float newX = 100 + random.nextInt((int) screenWidth - 200);
+                float newX = 125 + random.nextInt((int) screenWidth - 225);
                 float newY = highestY - (250 + random.nextInt(250));
-                
+
                 hook.SetPosition(newX, newY);
                 hook.Activate();
             }
         }
     }
 
-    public void SpawnNewSaws(float screenHeight, float screenWidth) {
-        // TODO: 3/25/2026 need to check that it doesnt spawn next to a hook or close to it
+    /**
+     * Respawns saws that have fallen off the bottom of the screen.
+     * Unlike hooks (which recycle to above the highest hook), saws always
+     * respawn above the player's current position so they remain a threat
+     * as the player climbs higher.
+     *
+     * @param ballY the ball's current Y position, used as the spawn anchor
+     */
+    public void SpawnNewSaws(float screenHeight, float screenWidth, float ballY) {
         for (Saw saw : Saws) {
             if (saw.getY() > screenHeight) {
-                // Find the highest hook to place the recycled one even higher
-                float highestY = screenHeight;
-                for (Saw s : Saws) {
-                    if (s.getY() < highestY) highestY = s.getY();
-                }
-
-                float newX = 100 + random.nextInt((int) screenWidth - 200);
-                float newY = highestY - (250 + random.nextInt(250));
+                // Place the saw 300–600px above the player
+                float newX;
+                float newY = ballY - (300 + random.nextInt(300));
+                int attempts = 0;
+                // Keep re-rolling X until the saw doesn't overlap a hook,
+                // or give up after 20 tries to avoid an infinite loop
+                do {
+                    newX = 100 + random.nextInt((int) screenWidth - 200);
+                    attempts++;
+                } while (isTooCloseToAnyHook(newX, newY) && attempts < 20);
 
                 saw.SetPosition(newX, newY);
-
             }
         }
     }
 
-
+    /**
+     * Returns true if the given (x, y) position is too close to any existing hook.
+     * Used when spawning saws to make sure they never overlap or sit right next to a hook,
+     * which would make it impossible for the player to safely grab that hook.
+     * Minimum safe distance = hook radius (75) + saw radius (75) + 100px buffer = 250px.
+     */
+    private boolean isTooCloseToAnyHook(float x, float y) {
+        //final float MIN_DISTANCE = 250f;
+        final float MIN_DISTANCE = 350f; //fixed threshold, not something that should change mid-function
+        for (Hook hook : Hooks) {
+            float dx = x - hook.getX();
+            float dy = y - hook.getY();
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+            if (distance < MIN_DISTANCE) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     public int CalcScore() {

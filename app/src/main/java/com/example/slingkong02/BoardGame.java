@@ -38,16 +38,16 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
-        
+
         p = new Paint();
         p.setColor(Color.BLUE);
         b = new Ball(width / 2, height - 200, 0, 0, 50, p);
-        
+
         p2 = new Paint();
         p2.setColor(Color.BLACK);
         p2.setStyle(Paint.Style.STROKE);
         p2.setStrokeWidth(5);
-        
+
         p3 = new Paint();
         p3.setColor(Color.BLACK);
         p3.setStrokeWidth(5);
@@ -55,7 +55,7 @@ public class BoardGame extends View {
         p4=new Paint();
         p4.setColor(Color.RED);
 
-        
+
         GM = new GameMoule(new ArrayList<Hook>(), new ArrayList<Saw>());
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(p4, width, height);
@@ -68,10 +68,10 @@ public class BoardGame extends View {
                 if (!F) {
                     if (WasFirstDrag) b.applyGravity();
                     b.move();
-                    
+
                     // --- כאן הוספנו את פונקציית הגלילה החדשה ---
                     GM.updateScrolling(b, height);
-                    
+
                     // עדכון קריאה ל-isCollide (ללא פרמטרים מיותרים)
                     if (GM.isCollide(b)) {
                         F = true;
@@ -102,11 +102,12 @@ public class BoardGame extends View {
                     CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
                     customDialog.show();
                 }
-                
+
                 // עדכון קריאה ל-SpawnNewHooksו SpawnNewSaws (ללא פרמטר b)
                 GM.SpawnNewHooks(height, width);
-                GM.SpawnNewSaws(height, width);
-                
+                // Pass b.getY() so saws respawn above the player's current position
+                GM.SpawnNewSaws(height, width, b.getY());
+
                 invalidate();
                 return true;
             }
