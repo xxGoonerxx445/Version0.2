@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@drawable/menu_background"
 
     tools:context=".MainActivity">
 
@@ -14,26 +15,31 @@
         android:id="@+id/StartGameX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#773F1A"
 
         android:text="Start Game" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ScoreBoard"
+        android:backgroundTint="#773F1A"
+
         android:id="@+id/ScoreBoardbtn">
 
     </Button>
-    <Button
+    <!--Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
         android:id="@+id/Settingsbtn">
 
-    </Button>
+    </Button-->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LogOut"
+        android:backgroundTint="#773F1A"
+
         android:id="@+id/LogOutbtn"></Button>
 </LinearLayout>
 

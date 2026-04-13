@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Play again?"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="40dp"></TextView>
 
     <Button
@@ -16,12 +18,14 @@
         android:layout_height="wrap_content"
         android:text="Yes"
         android:textSize="40dp"
+        android:backgroundTint="#773F1A"
         android:id="@+id/btnYes"></Button>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="No"
         android:textSize="40dp"
+        android:backgroundTint="#773F1A"
         android:id="@+id/btnNo"></Button>
 
 </LinearLayout>

@@ -28,7 +28,7 @@ public class MenuActivity extends AppCompatActivity {
         Button myButton = findViewById(R.id.StartGameX);
         Button LogOutbtn = findViewById(R.id.LogOutbtn);
         Button ScoreBoardbtn = findViewById(R.id.ScoreBoardbtn);
-        Button Settingsbtn = findViewById(R.id.Settingsbtn);
+        //Button Settingsbtn = findViewById(R.id.Settingsbtn);
 
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
