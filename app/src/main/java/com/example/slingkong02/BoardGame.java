@@ -21,7 +21,7 @@ public class BoardGame extends View {
     private boolean isDialogShown = false;
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p, p2, p3,p4;
+    private Paint p, p2, p3;
     private float dx, dy;
     private boolean F, WasFirstDrag = false;
     private float startX, startY;
@@ -29,12 +29,14 @@ public class BoardGame extends View {
     private int Score;
 
     private Bitmap BackGround;
+    private Bitmap sawBitmap;
     private Rect destRect;
     private int width, height;
 
     public BoardGame(Context context) {
         super(context);
         BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
+        sawBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icons8sawblade96);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
@@ -52,13 +54,10 @@ public class BoardGame extends View {
         p3.setColor(Color.BLACK);
         p3.setStrokeWidth(5);
         p3.setTextSize(75);
-        p4=new Paint();
-        p4.setColor(Color.RED);
-
 
         GM = new GameMoule(new ArrayList<Hook>(), new ArrayList<Saw>());
         GM.initDefaultHooks(p2, width, height);
-        GM.initDefaultSaws(p4, width, height);
+        GM.initDefaultSaws(sawBitmap, width, height);
 
         animationHandler = new Handler(new Handler.Callback() {
             @Override
@@ -194,7 +193,7 @@ public class BoardGame extends View {
     public void restartGame() {
         GM.Restart();
         GM.initDefaultHooks(p2, width, height);
-        GM.initDefaultSaws(p4, width, height);
+        GM.initDefaultSaws(sawBitmap, width, height);
         Score = 0;
         b = new Ball(width / 2, height - 200, 0, 0, 50, p);
         isDialogShown = false;

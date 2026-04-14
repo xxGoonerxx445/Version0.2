@@ -1,5 +1,6 @@
 package com.example.slingkong02;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class GameMoule {
         }
     }
 
-    public void initDefaultSaws(Paint p, float width, float height) {
+    public void initDefaultSaws(Bitmap sawBitmap, float width, float height) {
         Saws.clear();
         float currentY = height - 500;
         for (int i = 0; i < 2; i++) {
@@ -42,7 +43,7 @@ public class GameMoule {
                 attempts++;
             } while (isTooCloseToAnyHook(x, currentY) && attempts < 20);
 
-            Saws.add(new Saw(x, currentY, 75, p));
+            Saws.add(new Saw(x, currentY, 75, sawBitmap));
             currentY -= 300 + random.nextInt(200);
         }
     }
