@@ -32,19 +32,20 @@ public class GameMoule {
 
     public void initDefaultSaws(Bitmap sawBitmap, float width, float height) {
         Saws.clear();
-        float currentY = height - 500;
+        // Start saws further up so they aren't right next to the ball at spawn (ball starts at height-200)
+        float currentY = height - 800;
         for (int i = 0; i < 2; i++) {
             float x;
             int attempts = 0;
-            // Keep re-rolling X until the saw is far enough from all hooks,
-            // or give up after 20 tries to avoid an infinite loop
+            // Check against hooks AND already-placed saws
             do {
                 x = 100 + random.nextInt((int) width - 200);
                 attempts++;
-            } while (isTooCloseToAnyHook(x, currentY) && attempts < 20);
+            } while ((isTooCloseToAnyHook(x, currentY) || isTooCloseToAnySaw(x, currentY, null)) && attempts < 30);
 
             Saws.add(new Saw(x, currentY, 75, sawBitmap));
-            currentY -= 300 + random.nextInt(200);
+            // Space saws at least 500px apart vertically to avoid spawning on top of each other
+            currentY -= 500 + random.nextInt(200);
         }
     }
 
@@ -157,36 +158,63 @@ public class GameMoule {
      * @param ballY the ball's current Y position, used as the spawn anchor
      */
     public void SpawnNewSaws(float screenHeight, float screenWidth, float ballY) {
+        // Find the highest saw currently on screen (smallest Y = highest on screen)
+        // so we can stagger respawned saws above it, not on top of each other
+        float highestSawY = ballY - 500; // default: at least 500px above ball
+        for (Saw saw : Saws) {
+            if (saw.getY() <= screenHeight && saw.getY() < highestSawY) {
+                highestSawY = saw.getY();
+            }
+        }
+
         for (Saw saw : Saws) {
             if (saw.getY() > screenHeight) {
-                // Place the saw 300–600px above the player
                 float newX;
-                float newY = ballY - (300 + random.nextInt(300));
+                // Place the respawned saw above the highest existing saw by 400-700px,
+                // and also guarantee at least 500px above the ball
+                float baseY = Math.min(highestSawY, ballY - 500);
+                float newY = baseY - (400 + random.nextInt(300));
                 int attempts = 0;
-                // Keep re-rolling X until the saw doesn't overlap a hook,
-                // or give up after 20 tries to avoid an infinite loop
+                // Check against hooks AND other saws so they don't overlap
                 do {
                     newX = 100 + random.nextInt((int) screenWidth - 200);
                     attempts++;
-                } while (isTooCloseToAnyHook(newX, newY) && attempts < 20);
+                } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, saw)) && attempts < 30);
 
                 saw.SetPosition(newX, newY);
+                // Update highestSawY so the next saw in this loop spawns even higher
+                highestSawY = newY;
             }
         }
     }
 
     /**
      * Returns true if the given (x, y) position is too close to any existing hook.
-     * Used when spawning saws to make sure they never overlap or sit right next to a hook,
-     * which would make it impossible for the player to safely grab that hook.
-     * Minimum safe distance = hook radius (75) + saw radius (75) + 100px buffer = 250px.
      */
     private boolean isTooCloseToAnyHook(float x, float y) {
-        //final float MIN_DISTANCE = 250f;
-        final float MIN_DISTANCE = 350f; //fixed threshold, not something that should change mid-function
+        final float MIN_DISTANCE = 350f;
         for (Hook hook : Hooks) {
             float dx = x - hook.getX();
             float dy = y - hook.getY();
+            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+            if (distance < MIN_DISTANCE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the given (x, y) position is too close to any existing saw.
+     * Pass the saw being repositioned as excludeSaw so it doesn't compare against itself.
+     * Minimum safe distance = saw diameter (150) + 200px buffer = 350px.
+     */
+    private boolean isTooCloseToAnySaw(float x, float y, Saw excludeSaw) {
+        final float MIN_DISTANCE = 350f;
+        for (Saw saw : Saws) {
+            if (saw == excludeSaw) continue;
+            float dx = x - saw.getX();
+            float dy = y - saw.getY();
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
             if (distance < MIN_DISTANCE) {
                 return true;
