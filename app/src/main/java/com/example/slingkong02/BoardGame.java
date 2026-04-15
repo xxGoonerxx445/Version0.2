@@ -106,7 +106,8 @@ public class BoardGame extends View {
                 GM.SpawnNewHooks(height, width);
                 // Pass b.getY() so saws respawn above the player's current position
                 //GM.SpawnNewSaws(height, width, b.getY());
-                GM.TestSpawnnewSaws(height,width);
+                //GM.TestSpawnnewSaws(height,width);
+                GM.SpawnNewSaws2(height,width,b.getY());
 
 
                 invalidate();

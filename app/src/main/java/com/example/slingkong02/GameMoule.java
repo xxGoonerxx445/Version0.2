@@ -236,6 +236,32 @@ public class GameMoule {
 
         }
     }
+    public void SpawnNewSaws2(float screenHeight, float screenWidth, float ballY) {
+        // Find the highest saw currently on screen (smallest Y = highest on screen)
+        // so we can stagger respawned saws above it, not on top of each other
+
+
+        for (Saw saw : Saws) {
+            if (saw.getY() > screenHeight) {
+                float newX;
+                // Place the respawned saw above the highest existing saw by 400-700px,
+                // and also guarantee at least 500px above the ball
+
+                float newY= random.nextInt(200); //between 0 and -200 (200 above screen)
+                newY=-newY; //because nextint requirs a positive number
+                int attempts = 0;
+                // Check against hooks AND other saws so they don't overlap
+                do {
+                    newX = 200 + random.nextInt((int) screenWidth - 200);
+                    attempts++;
+                } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, saw)) && attempts < 30);
+
+                saw.SetPosition(newX, newY);
+                // Update highestSawY so the next saw in this loop spawns even higher
+
+            }
+        }
+    }
 
 
     public int CalcScore() {
@@ -251,4 +277,5 @@ public class GameMoule {
         score = 0;
         totalDistanceMoved = 0;
     }
+
 }
