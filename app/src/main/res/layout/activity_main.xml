@@ -6,30 +6,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/StartGame"
-        android:layout_width="wrap_content"
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/tabLayout"
+        android:background="#DB4E4E"
+        app:tabIndicator="@color/white"
+        app:tabSelectedTextColor="@color/white">
 
-        android:text="Start Game" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ScoreBoard"
-        android:id="@+id/ScoreBoardbtn">
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login">
 
-    </Button>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:id="@+id/Settingsbtn">
+        </com.google.android.material.tabs.TabItem>
 
-    </Button>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register">
+
+        </com.google.android.material.tabs.TabItem>
+
+
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EBE18C">
+
+    </FrameLayout>
+
+
 </LinearLayout>
-
-

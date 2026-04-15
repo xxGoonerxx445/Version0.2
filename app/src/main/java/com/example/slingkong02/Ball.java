@@ -1,24 +1,34 @@
 package com.example.slingkong02;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 public class Ball extends Base {
     private float dx, dy;
     private float radius;
+    private Bitmap bitmap;
+
+    private boolean Death=false;
     private boolean hooked = false;
+    private final RectF rect = new RectF();
     private Paint paint;
 
-    public Ball(float x, float y, float dx, float dy, float radius, Paint paint) {
+    public Ball(float x, float y, float dx, float dy, float radius, Bitmap bitmap) {
         super(x, y);
         this.dx = dx;
         this.dy = dy;
         this.radius = radius;
-        this.paint = paint;
+        this.bitmap=bitmap;
     }
 
     public boolean isHooked() {
         return hooked;
+    }
+    public float GetDy()
+    {
+        return this.dy;
     }
 
     public void setHooked(boolean hooked) {
@@ -27,16 +37,29 @@ public class Ball extends Base {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(x, y, radius, paint);
+        if (bitmap != null) {
+            // עדכון הערכים של האובייקט הקיים במקום יצירת חדש
+            rect.set(x - radius, y - radius, x + radius, y + radius);
+            canvas.drawBitmap(bitmap, null, rect, null);
+        }
     }
 
-    public float GetX() { return x; }
-    public float GetY() { return y; }
+
+    public float GetDx() { return dx; }
+    //public float GetDy() { return dy; }
+
 
     public void move() {
         x = x + dx;
         y = y + dy;
     }
+
+    public void applyGravity() {
+        if (!hooked) {
+            dy += 0.02f; // Gravity constant
+        }
+    }
+
     public void setX(float x) { this.x = x; }
     public void setY(float y) { this.y = y; }
 
@@ -49,7 +72,7 @@ public class Ball extends Base {
     }
 
     public boolean didusertouch(float tx, float ty) {
-        // Fix: Removed the semicolon so it actually checks the distance
+
         return (tx >= x - radius && tx <= x + radius && ty >= y - radius && ty <= y + radius);
     }
 
@@ -58,8 +81,17 @@ public class Ball extends Base {
             dx = -dx;
         }
         if (y + radius >= screenHeight) {
-            dy = -dy;
+            dy = -dy * 0.02f; // Bounce with some energy loss
+            //dy = -dy;
             y = screenHeight - radius;
         }
+    }
+    public boolean isDeath()
+    {
+        return Death;
+    }
+    public void SetDeath()
+    {
+        Death=true;
     }
 }

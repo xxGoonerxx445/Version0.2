@@ -6,102 +6,124 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowMetrics;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
 public class BoardGame extends View {
-
     private Ball b;
-    private Paint p;
-    private float viewWidth, viewHeight;
-
+    private boolean isDialogShown = false;
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p2;
-    private float dx;
-    private float dy;
-    private boolean F;
+    private Paint p, p2, p3;
+    private float dx, dy;
+    private boolean F, WasFirstDrag = false;
     private float startX, startY;
-
-
     private GameMoule GM;
+    private int Score;
 
     private Bitmap BackGround;
+    private Bitmap sawBitmap;
+    private Bitmap monkeyBitmap;
     private Rect destRect;
-    private int width,height;
-
-
+    private int width, height;
 
     public BoardGame(Context context) {
         super(context);
         BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
+        sawBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icons8sawblade96);
+        monkeyBitmap=BitmapFactory.decodeResource(getResources(), R.drawable.monkey);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
+
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50, p); // TODO: 04/01/2026 fix dx dy
-        p2 = new Paint();
+        b = new Ball(width / 2, height -301, 0, 0, 50, monkeyBitmap);
 
-        GM = new GameMoule(new ArrayList<Hook>());
+        p2 = new Paint();
+        p2.setColor(Color.BLACK);
+        p2.setStyle(Paint.Style.STROKE);
+        p2.setStrokeWidth(5);
+
+        p3 = new Paint();
+        p3.setColor(Color.BLACK);
+        p3.setStrokeWidth(5);
+        p3.setTextSize(75);
+
+        GM = new GameMoule(new ArrayList<Hook>(), new ArrayList<Saw>());
         GM.initDefaultHooks(p2, width, height);
+        GM.initDefaultSaws(sawBitmap, width, height);
+
         animationHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
+                if (isDialogShown) return true;
+
                 if (!F) {
+                    if (WasFirstDrag) b.applyGravity();
                     b.move();
 
-                    // --- INFINITE SCROLLING LOGIC ---
-                    // If ball goes above the middle of the screen, scroll the world down
-                    float threshold = height / 2.0f;
-                    if (b.getY() < threshold) {
-                        float offset = threshold - b.getY();
-                        b.setY(threshold); // Keep ball at threshold
-                        GM.shiftHooks(offset, width, height, p2);
-                    }
-                    // --------------------------------
+                    // --- כאן הוספנו את פונקציית הגלילה החדשה ---
+                    GM.updateScrolling(b, height);
 
+                    // עדכון קריאה ל-isCollide (ללא פרמטרים מיותרים)
                     if (GM.isCollide(b)) {
-                        F = true; // Hooked
+                        F = true;
+
+                    }
+                    if(GM.isCollideSaws(b))// TODO: 3/25/2026 check collison with saws
+                    {
+                        F=true;
+                        b.SetDeath();
+                        b.setDy(0);
+                        b.setDx(0);
+                        isDialogShown = true;
+                        CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
+                        customDialog.show();
                     }
 
                     b.TouchedEdge(width, height);
-                    invalidate();
                 }
+
+                // עדכון הניקוד מה-GM בכל פריים
+                Score = GM.CalcScore();
+
+                if (WasFirstDrag && b.getY() + 50 >= height && !isDialogShown) {
+                    b.SetDeath();
+                    b.setDy(0);
+                    b.setDx(0);
+                    isDialogShown = true;
+                    CustomDialog customDialog = new CustomDialog(getContext(), BoardGame.this);
+                    customDialog.show();
+                }
+
+                // עדכון קריאה ל-SpawnNewHooksו SpawnNewSaws (ללא פרמטר b)
+                GM.SpawnNewHooks(height, width);
+                // Pass b.getY() so saws respawn above the player's current position
+                GM.SpawnNewSaws(height, width, b.getY());
+
+                invalidate();
                 return true;
             }
         });
 
-
         threadGame.start();
-        Toast.makeText(getContext(), "Infinite Mode Active", Toast.LENGTH_SHORT).show();
-
-
-
-
-
-        Toast.makeText(getContext(), "width="+width+"height="+height, Toast.LENGTH_SHORT).show();
-
-
-
     }
+
+    public int getScore() {
+        return Score;
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewWidth = w;
-        viewHeight = h;
         destRect = new Rect(0, 0, w, h);
     }
 
@@ -114,54 +136,30 @@ public class BoardGame extends View {
             canvas.drawBitmap(BackGround, 0, 0, null);
         }
         b.draw(canvas);
-        p2.setColor(Color.RED);
-        p2.setStyle(Paint.Style.STROKE);
-        p2.setStrokeWidth(5);
-        GM.DrawHooks(canvas);
-
-
-
-
+        GM.ShowScore(canvas, p3, Score);
+        GM.DrawHooksAndSaws(canvas);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (isDialogShown) return false;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(b.didusertouch(event.getX(), event.getY()))
-                {
-                    b.setHooked(false);   //  release from hook
-                    F=true;
-                    startX = b.GetX();
-                    startY = b.GetY();
-
+                if (b.didusertouch(event.getX(), event.getY()) && (b.isHooked() || !WasFirstDrag)) {
+                    b.setHooked(false);
+                    F = true;
+                    //startX = b.GetX();
+                    startX=b.getX();
+                    startY = b.getY();
                 }
-
                 break;
             case MotionEvent.ACTION_MOVE:
-                /*float touchX = event.getX();
-                float touchY = event.getY();
-                dx = (touchX - startX);
-                dy = (touchY - startY); // TODO: 04/01/2026 fix velocity
-                b.setDx(-dx/10);
-                b.setDy(-dy/10);
-                
-                
-                if((dx*dx)+(dy*dy)<150*150)
-                {
-                    b.setNewLocation(touchX, touchY);
-                }
-              
-
-                invalidate();
-                break;*/
-                if (F && !b.isHooked()) { // Only allow dragging if we touched the ball
+                if (F && !b.isHooked()) {
                     float touchX = event.getX();
                     float touchY = event.getY();
                     dx = (touchX - startX);
                     dy = (touchY - startY);
-
-                    // Limit drag distance
                     if ((dx * dx) + (dy * dy) < 300 * 300) {
                         b.setNewLocation(touchX, touchY);
                     }
@@ -170,41 +168,39 @@ public class BoardGame extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 if (F && !b.isHooked()) {
-                    // Launch ball in opposite direction of drag
                     b.setDx(-(event.getX() - startX) / 10f);
                     b.setDy(-(event.getY() - startY) / 10f);
-                    F = false; // Start movement
+                    F = false;
+                    WasFirstDrag = true;
                 }
-
-
-
                 break;
         }
         return true;
     }
 
-
-
-
-
-
-
-
-
-    private class ThreadGame extends Thread{
+    private class ThreadGame extends Thread {
         @Override
         public void run() {
-            super.run();
-            while (true)
-            {
+            while (!isInterrupted()) {
                 try {
                     sleep(16);
                     animationHandler.sendEmptyMessage(0);
                 } catch (InterruptedException e) {
-                   break;
+                    break;
                 }
             }
         }
+    }
 
+    public void restartGame() {
+        GM.Restart();
+        GM.initDefaultHooks(p2, width, height);
+        GM.initDefaultSaws(sawBitmap, width, height);
+        Score = 0;
+        b = new Ball(width / 2, height - 200, 0, 0, 50, monkeyBitmap);
+        isDialogShown = false;
+        WasFirstDrag = false;
+        F = false;
+        invalidate();
     }
 }
