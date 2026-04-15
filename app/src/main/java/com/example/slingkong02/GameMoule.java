@@ -223,20 +223,6 @@ public class GameMoule {
         return false;
     }
 
-    public void TestSpawnnewSaws(float screenHeight,float screenWidth)
-    {
-        for (Saw saw : Saws) {
-            if (saw.getY() > screenHeight) {
-                float newX= 100 + random.nextInt((int) screenWidth - 200);
-                float newY= random.nextInt(200); //between 0 and -200 (200 above screen)
-                newY=-newY; //because nextint requirs a positive number
-                saw.SetPosition(newX, newY);
-
-            }
-
-        }
-    }
-
 
     public int CalcScore() {
         return score;
