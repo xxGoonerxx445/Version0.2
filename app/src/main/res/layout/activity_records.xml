@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Records"
+        android:textColor="#773F1A"
+        android:textStyle="bold"
         android:textSize="50dp"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView

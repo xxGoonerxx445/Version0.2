@@ -45,7 +45,7 @@ public class BoardGame extends View {
 
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50, monkeyBitmap);
+        b = new Ball(width / 2, height -301, 0, 0, 50, monkeyBitmap);
 
         p2 = new Paint();
         p2.setColor(Color.BLACK);
