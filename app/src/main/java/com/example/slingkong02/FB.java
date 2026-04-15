@@ -18,7 +18,7 @@ public class FB {
 
     private FB() {
         database = FirebaseDatabase.getInstance();
-        setupRecordsListener();
+        setupRecordsListener(); //
     }
 
     public static FB getInstance() {
