@@ -1,21 +1,26 @@
 package com.example.slingkong02;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 public class Ball extends Base {
     private float dx, dy;
     private float radius;
+    private Bitmap bitmap;
+
     private boolean Death=false;
     private boolean hooked = false;
+    private final RectF rect = new RectF();
     private Paint paint;
 
-    public Ball(float x, float y, float dx, float dy, float radius, Paint paint) {
+    public Ball(float x, float y, float dx, float dy, float radius, Bitmap bitmap) {
         super(x, y);
         this.dx = dx;
         this.dy = dy;
         this.radius = radius;
-        this.paint = paint;
+        this.bitmap=bitmap;
     }
 
     public boolean isHooked() {
@@ -32,8 +37,13 @@ public class Ball extends Base {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawCircle(x, y, radius, paint);
+        if (bitmap != null) {
+            // עדכון הערכים של האובייקט הקיים במקום יצירת חדש
+            rect.set(x - radius, y - radius, x + radius, y + radius);
+            canvas.drawBitmap(bitmap, null, rect, null);
+        }
     }
+
 
     public float GetDx() { return dx; }
     //public float GetDy() { return dy; }

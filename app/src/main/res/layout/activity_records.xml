@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/bgimage"
     tools:context=".RecordsActivity">
 
     <TextView
@@ -18,7 +19,7 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView"
-        android:background="#FFFF00"
+        android:background="#90EE90"
         android:layout_marginLeft="40dp"
         ></androidx.recyclerview.widget.RecyclerView>
 

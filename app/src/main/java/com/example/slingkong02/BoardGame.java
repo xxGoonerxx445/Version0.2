@@ -30,6 +30,7 @@ public class BoardGame extends View {
 
     private Bitmap BackGround;
     private Bitmap sawBitmap;
+    private Bitmap monkeyBitmap;
     private Rect destRect;
     private int width, height;
 
@@ -37,13 +38,14 @@ public class BoardGame extends View {
         super(context);
         BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
         sawBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icons8sawblade96);
+        monkeyBitmap=BitmapFactory.decodeResource(getResources(), R.drawable.monkey);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
 
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height - 200, 0, 0, 50, p);
+        b = new Ball(width / 2, height - 200, 0, 0, 50, monkeyBitmap);
 
         p2 = new Paint();
         p2.setColor(Color.BLACK);
@@ -195,7 +197,7 @@ public class BoardGame extends View {
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(sawBitmap, width, height);
         Score = 0;
-        b = new Ball(width / 2, height - 200, 0, 0, 50, p);
+        b = new Ball(width / 2, height - 200, 0, 0, 50, monkeyBitmap);
         isDialogShown = false;
         WasFirstDrag = false;
         F = false;
