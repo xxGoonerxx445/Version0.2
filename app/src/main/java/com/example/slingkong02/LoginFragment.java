@@ -47,7 +47,6 @@ public class LoginFragment extends Fragment {
         etEmail = view.findViewById(R.id.etEmailAddress);
         etPassword = view.findViewById(R.id.etNumberPassword);
         btnLogin = view.findViewById(R.id.btnLogin);
-
         // 3. הגדרת מאזין ללחיצה על כפתור ההתחברות
         if (btnLogin != null) {
             btnLogin.setOnClickListener(v -> performLogin());

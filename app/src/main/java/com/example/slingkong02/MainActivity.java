@@ -36,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         // טעינת הפראגמנט הראשון
         if (savedInstanceState == null) {
+            //If it's the first time, it loads the LoginFragment into the FrameLayout.
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, new LoginFragment())
                     .commit();
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            //Called when a tab is selected. Depending on the tab's position, it creates a new instance of LoginFragment (for tab 0) or RegistrationFragment (for tab 1) and replaces the current fragment in the FrameLayout with the new one, including a transition animation.
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment fragment = null;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         //btnGame = findViewById(R.id.btnGame);
         //btnGame.setOnClickListener(this);
+        //load the actual "records" data from Firebase using the FB instance.
 
         records = new ArrayList<>();
         fb = FB.getInstance();

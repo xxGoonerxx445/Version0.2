@@ -45,7 +45,7 @@ public class BoardGame extends View {
 
         p = new Paint();
         p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height -301, 0, 0, 50, monkeyBitmap);
+        b = new Ball(width / 2, height -301, 0, 0, 75, monkeyBitmap); //here
 
         p2 = new Paint();
         p2.setColor(Color.BLACK);
@@ -95,7 +95,7 @@ public class BoardGame extends View {
                 // עדכון הניקוד מה-GM בכל פריים
                 Score = GM.CalcScore();
 
-                if (WasFirstDrag && b.getY() + 50 >= height && !isDialogShown) {
+                if (WasFirstDrag && b.getY() + 75 >= height && !isDialogShown) {
                     b.SetDeath();
                     b.setDy(0);
                     b.setDx(0);
@@ -197,7 +197,7 @@ public class BoardGame extends View {
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(sawBitmap, width, height);
         Score = 0;
-        b = new Ball(width / 2, height - 200, 0, 0, 50, monkeyBitmap);
+        b = new Ball(width / 2, height - 200, 0, 0, 75, monkeyBitmap);
         isDialogShown = false;
         WasFirstDrag = false;
         F = false;

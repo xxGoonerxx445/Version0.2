@@ -56,7 +56,7 @@ public class Ball extends Base {
 
     public void applyGravity() {
         if (!hooked) {
-            dy += 0.02f; // Gravity constant
+            dy += 0.03f; // Gravity constant
         }
     }
 
