@@ -160,7 +160,7 @@ public class BoardGame extends View {
                     float touchY = event.getY();
                     dx = (touchX - startX);
                     dy = (touchY - startY);
-                    if ((dx * dx) + (dy * dy) < 300 * 300) {
+                    if ((dx * dx) + (dy * dy) < 130 * 130) {
                         b.setNewLocation(touchX, touchY);
                     }
                 }
