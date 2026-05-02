@@ -16,13 +16,6 @@ public class Saw extends Base{
         this.bitmap = bitmap;
     }
 
-    /*@Override
-    public void draw(Canvas canvas) {
-        if (bitmap != null) {
-            RectF destRect = new RectF(x - radius, y - radius, x + radius, y + radius);
-            canvas.drawBitmap(bitmap, null, destRect, null);
-        }
-    }*/
 
     @Override
     public void draw(Canvas canvas) {

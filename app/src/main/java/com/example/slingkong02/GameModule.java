@@ -6,7 +6,7 @@ import android.graphics.Paint;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class GameMoule {
+public class GameModule {
 
     private ArrayList<Hook> Hooks = new ArrayList<Hook>();
     private ArrayList<Saw> Saws = new ArrayList<Saw>();
@@ -14,7 +14,7 @@ public class GameMoule {
     private float totalDistanceMoved = 0; // Tracks total progress for score
     private int score;
 
-    public GameMoule(ArrayList<Hook> Hooks,ArrayList<Saw> Saws) {
+    public GameModule(ArrayList<Hook> Hooks,ArrayList<Saw> Saws) {
         this.Hooks = Hooks;
         this.Saws=Saws;
     }

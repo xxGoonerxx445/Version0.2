@@ -25,7 +25,7 @@ public class BoardGame extends View {
     private float dx, dy;
     private boolean F, WasFirstDrag = false;
     private float startX, startY;
-    private GameMoule GM;
+    private GameModule GM;
     private int Score;
 
     private Bitmap BackGround;
@@ -48,16 +48,16 @@ public class BoardGame extends View {
         b = new Ball(width / 2, height -301, 0, 0, 75, monkeyBitmap); //here
 
         p2 = new Paint();
-        p2.setColor(Color.BLACK);
+        p2.setColor(Color.parseColor("#65442E"));
         p2.setStyle(Paint.Style.STROKE);
-        p2.setStrokeWidth(5);
+        p2.setStrokeWidth(7);
 
         p3 = new Paint();
         p3.setColor(Color.BLACK);
         p3.setStrokeWidth(5);
         p3.setTextSize(75);
 
-        GM = new GameMoule(new ArrayList<Hook>(), new ArrayList<Saw>());
+        GM = new GameModule(new ArrayList<Hook>(), new ArrayList<Saw>());
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(sawBitmap, width, height);
 
