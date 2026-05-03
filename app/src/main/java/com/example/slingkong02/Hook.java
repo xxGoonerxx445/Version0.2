@@ -19,7 +19,7 @@ public class Hook extends Base{
 
     @Override
     public void draw(Canvas canvas) {
-        // Add your drawing logic here
+
         canvas.drawCircle(x,y,radius,paint);
 
     }

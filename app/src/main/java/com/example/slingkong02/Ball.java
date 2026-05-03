@@ -56,7 +56,7 @@ public class Ball extends Base {
 
     public void applyGravity() {
         if (!hooked) {
-            dy += 0.07f; // Gravity constant
+            dy += 0.06f; // Gravity constant
         }
     }
 
@@ -80,11 +80,11 @@ public class Ball extends Base {
         if (x - radius <= 0 || x + radius >= screenWidth) {
             dx = -dx;
         }
-        if (y + radius >= screenHeight) {
+        /*if (y + radius >= screenHeight) {
             dy = -dy * 0.02f; // Bounce with some energy loss
             //dy = -dy;
             y = screenHeight - radius;
-        }
+        }*/
     }
     public boolean isDeath()
     {
