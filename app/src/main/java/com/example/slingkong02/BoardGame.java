@@ -168,8 +168,8 @@ public class BoardGame extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 if (F && !b.isHooked()) {
-                    b.setDx(-(event.getX() - startX) / 15f);
-                    b.setDy(-(event.getY() - startY) / 15f);
+                    b.setDx(-(event.getX() - startX) / 14f);
+                    b.setDy(-(event.getY() - startY) / 14f);
                     F = false;
                     WasFirstDrag = true;
                 }
