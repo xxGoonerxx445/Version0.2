@@ -139,10 +139,16 @@ public class GameModule {
                     if (h.getY() < highestY) highestY = h.getY();
                 }
 
-
-                //float newX = 100 + random.nextInt((int) screenWidth - 200);
-                float newX = 125 + random.nextInt((int) screenWidth - 225);
+                float newX;
                 float newY = highestY - (250 + random.nextInt(250));
+                int attempts = 0;
+
+                // Check against existing hooks and saws to ensure safe placement
+                do {
+                    //float newX = 100 + random.nextInt((int) screenWidth - 200);
+                    newX = 125 + random.nextInt((int) screenWidth - 225);
+                    attempts++;
+                } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, null)) && attempts < 30);
 
                 hook.SetPosition(newX, newY);
                 hook.Activate();
@@ -192,7 +198,7 @@ public class GameModule {
     /**
      * Returns true if the given (x, y) position is too close to any existing hook.
      */
-   private boolean isTooCloseToAnyHook(float x, float y) {
+    private boolean isTooCloseToAnyHook(float x, float y) {
         final float MIN_DISTANCE = 350f;
         for (Hook hook : Hooks) {
             float dx = x - hook.getX();
