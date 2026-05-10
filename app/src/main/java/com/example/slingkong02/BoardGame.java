@@ -23,7 +23,7 @@ public class BoardGame extends View {
     private ThreadGame threadGame = new ThreadGame();
     private Paint p, p2, p3;
     private float dx, dy;
-    private boolean F, WasFirstDrag = false;
+    private boolean F, WasFirstDrag = false; //דגל המציין האם השחקן נמצא כרגע בתהליך של מתיחת הדמות (Dragging).
     private float startX, startY;
     private GameModule GM;
     private int Score;

@@ -32,7 +32,7 @@ public class GameModule {
 
     public void initDefaultSaws(Bitmap sawBitmap, float width, float height) {
         Saws.clear();
-        // Start saws further up so they aren't right next to the ball at spawn (ball starts at height-200)
+        // Start saws further up so they aren't right next to the ball at spawn
         float currentY = height - 800;
         for (int i = 0; i < 2; i++) {
             float x;
@@ -134,10 +134,11 @@ public class GameModule {
         for (Hook hook : Hooks) {
             if (hook.getY() > screenHeight) {
                 // Find the highest hook to place the recycled one even higher
-                float highestY = screenHeight;
+                float highestY = screenHeight; //check
                 for (Hook h : Hooks) {
                     if (h.getY() < highestY) highestY = h.getY();
                 }
+
 
                 //float newX = 100 + random.nextInt((int) screenWidth - 200);
                 float newX = 125 + random.nextInt((int) screenWidth - 225);
@@ -191,7 +192,7 @@ public class GameModule {
     /**
      * Returns true if the given (x, y) position is too close to any existing hook.
      */
-    private boolean isTooCloseToAnyHook(float x, float y) {
+   private boolean isTooCloseToAnyHook(float x, float y) {
         final float MIN_DISTANCE = 350f;
         for (Hook hook : Hooks) {
             float dx = x - hook.getX();
@@ -220,7 +221,7 @@ public class GameModule {
                 return true;
             }
         }
-        return false;//
+        return false;
     }
 
 
