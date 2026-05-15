@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -70,7 +71,7 @@ public class BoardGame extends View {
                     if (WasFirstDrag) b.applyGravity();
                     b.move();
 
-                    // --- כאן הוספנו את פונקציית הגלילה החדשה ---
+                    //  פונקציית הגלילה
                     GM.updateScrolling(b, height);
 
                     // עדכון קריאה ל-isCollide (ללא פרמטרים מיותרים)
@@ -168,8 +169,16 @@ public class BoardGame extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 if (F && !b.isHooked()) {
-                    b.setDx(-(event.getX() - startX) / 14f);
-                    b.setDy(-(event.getY() - startY) / 14f);
+                    // Use the ball's visual position (b.getX/Y) which is locked to 130px,
+                    // instead of the finger's position (event.getX/Y).
+                    float touchX_ENDOFMOVMENT = b.getX();
+                    float touchY_ENDOFMOVMENT = b.getY();
+
+                    // the velocity calculation  matches the visual drag distance.
+                    b.setDx(-(touchX_ENDOFMOVMENT - startX) / 12f);
+                    b.setDy(-(touchY_ENDOFMOVMENT - startY) / 12f);
+
+
                     F = false;
                     WasFirstDrag = true;
                 }

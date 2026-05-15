@@ -40,7 +40,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
         //getting the record of the specified position
         Record record = recordsList.get(position);
 
-        // TODO: update according to your Class
+
         holder.tvName.setText(record.getName());
 
         // convert int to String by:  ""+int
