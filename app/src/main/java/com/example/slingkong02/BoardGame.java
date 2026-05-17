@@ -175,8 +175,8 @@ public class BoardGame extends View {
                     float touchY_ENDOFMOVMENT = b.getY();
 
                     // the velocity calculation  matches the visual drag distance.
-                    b.setDx(-(touchX_ENDOFMOVMENT - startX) / 12f);
-                    b.setDy(-(touchY_ENDOFMOVMENT - startY) / 12f);
+                    b.setDx(-(touchX_ENDOFMOVMENT - startX) / 11f);
+                    b.setDy(-(touchY_ENDOFMOVMENT - startY) / 11f);
 
 
                     F = false;
