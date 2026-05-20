@@ -43,6 +43,7 @@ public class BoardGame extends View {
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
+        Toast.makeText(context, "width=" + width + " height=" + height, Toast.LENGTH_LONG).show();
 
         p = new Paint();
         p.setColor(Color.BLUE);

@@ -23,10 +23,10 @@ public class GameModule {
         Hooks.clear();
         float currentY = height - 500;
         for (int i = 0; i < 6; i++) {
-            //float x = 100 + random.nextInt((int) width - 200);
+
             float x = 125 + random.nextInt((int) width - 225);
             Hooks.add(new Hook(x, currentY, 75, p));
-            currentY -= 300 + random.nextInt(200);
+            currentY -= 300 + random.nextInt(200); //מספר רנדומלי שהוא הערך הקיים פחות (300 ועוד מספר רנדומלי בין 0 ל200)
         }
     }
 
@@ -41,7 +41,7 @@ public class GameModule {
             do {
                 x = 100 + random.nextInt((int) width - 200);
                 attempts++;
-            } while ((isTooCloseToAnyHook(x, currentY) || isTooCloseToAnySaw(x, currentY, null)) && attempts < 30);
+            } while ((isTooCloseToAnyHook(x, currentY) || isTooCloseToAnySaw(x, currentY, null)) && attempts < 30); //When placing saws for the first time, there is no saw being repositioned — we're creating brand new ones. So null is passed, and since no saw equals null, nothing gets skipped and all existing saws are checked normally.
 
             Saws.add(new Saw(x, currentY, 75, sawBitmap));
             // Space saws at least 500px apart vertically to avoid spawning on top of each other
@@ -69,6 +69,11 @@ public class GameModule {
 
         if (b.getY() < scrollThreshold) {
             float shiftDistance = scrollThreshold - b.getY();
+            //Instead of letting the ball move further up, the game:
+            //
+            //Calculates how far above the threshold the ball went
+            //Snaps the ball back to the threshold
+            //Moves all hooks and saws downward by that same distance
 
             // Move ball back to the threshold so it stays visible
             b.setY(scrollThreshold);
@@ -199,11 +204,11 @@ public class GameModule {
      * Returns true if the given (x, y) position is too close to any existing hook.
      */
     private boolean isTooCloseToAnyHook(float x, float y) {
-        final float MIN_DISTANCE = 350f;
-        for (Hook hook : Hooks) {
+        final float MIN_DISTANCE = 350f; //Minimum distance threshold
+        for (Hook hook : Hooks) { //Goes through every hook in the Hooks list one by one.
             float dx = x - hook.getX();
             float dy = y - hook.getY();
-            float distance = (float) Math.sqrt(dx * dx + dy * dy);
+            float distance = (float) Math.sqrt(dx * dx + dy * dy); //המרחק מחושב בפיתגורס בין המיקומם שקיבלנו לבין הוו הנוכחי
             if (distance < MIN_DISTANCE) {
                 return true;
             }
@@ -219,7 +224,7 @@ public class GameModule {
     private boolean isTooCloseToAnySaw(float x, float y, Saw excludeSaw) {
         final float MIN_DISTANCE = 350f;
         for (Saw saw : Saws) {
-            if (saw == excludeSaw) continue;
+            if (saw == excludeSaw) continue; //בשבשיל לא להשוות את המסור לעצמו
             float dx = x - saw.getX();
             float dy = y - saw.getY();
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
