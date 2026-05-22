@@ -134,6 +134,13 @@ public class GameModule {
 
     /**
      * Recycles hooks that fell off the bottom of the screen to the top.
+     * 1. Loop through all hooks and find one that fell off the bottom (hook.getY() > screenHeight)
+     * 2. Find the highest hook on screen by looping through all hooks and finding the smallest Y value
+     * 3. Set newY to 250-500px above that highest hook
+     * 4. Pick a random X position
+     * 5. Check if that X is too close to any hook or saw — if yes, pick a new random X and try again (up to 30 attempts)
+     * 6. Move the recycled hook to the new position
+     * 7. Reactivate the hook so the ball can latch onto it
      */
     public void SpawnNewHooks(float screenHeight, float screenWidth) {
         for (Hook hook : Hooks) {
@@ -167,15 +174,35 @@ public class GameModule {
      * respawn above the player's current position so they remain a threat
      * as the player climbs higher.
      *
+     *
      * @param ballY the ball's current Y position, used as the spawn anchor
      */
+    //SpawnNewSaws
+    //
+    //1. Set `highestSawY` to a default of 500px above the ball — this is the starting anchor point in case no saws are on screen yet
+    //
+    //2. Loop through all saws and find the one with the smallest Y that is still on screen (`saw.getY() <= screenHeight`). This becomes the new `highestSawY`
+    //
+    //3. Loop through all saws again and find ones that fell off the bottom (`saw.getY() > screenHeight`)
+    //
+    //4. Calculate `baseY` using `Math.min(highestSawY, ballY - 500)` — this picks whichever is **higher** on screen, guaranteeing the new saw spawns both above the highest existing saw AND at least 500px above the ball
+    //
+    //5. Set `newY` to 400-700px above `baseY`
+    //
+    //6. Pick a random X position
+    //
+    //7. Check if that X is too close to any hook or saw (excluding the saw being repositioned) — if yes, pick a new random X and try again (up to 30 attempts)
+    //
+    //8. Move the saw to its new position
+    //
+    //9. Update `highestSawY` to the saw's new Y — so if there are multiple saws to respawn in the same loop, each one spawns **above the previous one** and they don't overlap
     public void SpawnNewSaws(float screenHeight, float screenWidth, float ballY) {
         // Find the highest saw currently on screen (smallest Y = highest on screen)
         // so we can stagger respawned saws above it, not on top of each other
         float highestSawY = ballY - 500; // default: at least 500px above ball
         for (Saw saw : Saws) {
             if (saw.getY() <= screenHeight && saw.getY() < highestSawY) {
-                highestSawY = saw.getY();
+                highestSawY = saw.getY(); //finds highest saw
             }
         }
 
@@ -184,8 +211,8 @@ public class GameModule {
                 float newX;
                 // Place the respawned saw above the highest existing saw by 400-700px,
                 // and also guarantee at least 500px above the ball
-                float baseY = Math.min(highestSawY, ballY - 500);
-                float newY = baseY - (400 + random.nextInt(300));
+                float baseY = Math.min(highestSawY, ballY - 500); // it's asking: which is higher on screen —  the highest saw, or 500px above the ball?
+                float newY = baseY - (400 + random.nextInt(300)); //baseY-random number between 400 and 700
                 int attempts = 0;
                 // Check against hooks AND other saws so they don't overlap
                 do {
