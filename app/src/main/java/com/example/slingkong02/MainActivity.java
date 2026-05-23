@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onStart() { //אם המשתמש כבר התחבר בעבר אז במקום לדרוש ממנו להתחבר מחדש יש להעביר אותו לתפריט של המשחק
         super.onStart();
         // בדיקה אם המשתמש מחובר
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -75,10 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void initialization() {
-        // initialize
-
-        //btnGame = findViewById(R.id.btnGame);
-        //btnGame.setOnClickListener(this);
+        // initialize the records arraylist
         //load the actual "records" data from Firebase using the FB instance.
 
         records = new ArrayList<>();
