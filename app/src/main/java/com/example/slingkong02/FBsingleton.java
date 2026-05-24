@@ -33,7 +33,7 @@ public class FBsingleton {
      * שמירת שם המשתמש ב-Firebase Realtime Database.
      * @param name השם שהוזן על ידי המשתמש בהרשמה.
      */
-    public void setName(String name) {
+    public void setName(String name) { //נקראת רק במעמד ההרשמה של משתמש חדש.
         // בדיקה שיש משתמש מחובר לפני ניסיון כתיבה
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             // יצירת נתיב בתוך ה-Database תחת users -> UID -> name

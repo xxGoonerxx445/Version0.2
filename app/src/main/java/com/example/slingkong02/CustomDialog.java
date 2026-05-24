@@ -66,6 +66,7 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
             int finalScore = boardGame.getScore();
             FB.getInstance().saveHighScoreIfBetter(finalScore);
 
+
             dismiss();
             
             // Navigate back to Menu

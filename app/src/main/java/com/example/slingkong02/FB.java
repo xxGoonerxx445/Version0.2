@@ -20,6 +20,12 @@ public class FB {
         setupRecordsListener();
     }
 
+    // Singleton reasons:
+// 1. One Listener: Prevents duplicate Firebase updates.
+// 2. Global Access: Easy access from any class via getInstance().
+// 3. Efficiency: Single connection saves memory and battery.
+// 4. Consistency: One source of truth for data across the app.
+
     public static FB getInstance() { //singleton to make sure only one database is created.
         //everytime the app opens a new instance that communicates with the database is created.(cuz it was null a first)
         if (null == instance) {
