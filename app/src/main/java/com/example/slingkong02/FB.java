@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-
+//אחראית על ניהול טבלת השיאים
 public class FB {
     private static FB instance;
     private FirebaseDatabase database;
@@ -20,11 +20,6 @@ public class FB {
         setupRecordsListener();
     }
 
-    // Singleton reasons:
-// 1. One Listener: Prevents duplicate Firebase updates.
-// 2. Global Access: Easy access from any class via getInstance().
-// 3. Efficiency: Single connection saves memory and battery.
-// 4. Consistency: One source of truth for data across the app.
 
     public static FB getInstance() { //singleton to make sure only one database is created.
         //everytime the app opens a new instance that communicates with the database is created.(cuz it was null a first)
@@ -34,9 +29,9 @@ public class FB {
         return instance;
     }
     //So no matter how many times different parts of the app call FB.getInstance(), they all get back the exact same object — not a new one each time.
-
+    //Query is the thing that "asks" the database for data
     private void setupRecordsListener() {
-        Query myQuery = database.getReference("records").orderByChild("score").limitToLast(10); //Query is the thing that "asks" the database for data
+        Query myQuery = database.getReference("records").orderByChild("score").limitToLast(10); //returns from lowest too highest
         myQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -45,7 +40,9 @@ public class FB {
                 for(DataSnapshot userSnapshot : snapshot.getChildren()) {
                     Record currentRecord = userSnapshot.getValue(Record.class);
                     if (currentRecord != null) {
-                        MainActivity.records.add(0, currentRecord);
+                        MainActivity.records.add(0, currentRecord); //changes it to be highest to lowest
+
+
                     }
                 }
             }
@@ -96,7 +93,5 @@ public class FB {
         });
     }
 
-    public ArrayList<Record> getRecords() {
-        return MainActivity.records;
-    }
+
 }

@@ -157,8 +157,8 @@ public class GameModule {
 
                 // Check against existing hooks and saws to ensure safe placement
                 do {
-                    //float newX = 100 + random.nextInt((int) screenWidth - 200);
-                    newX = 125 + random.nextInt((int) screenWidth - 225);
+                    newX = 50 + random.nextInt((int) screenWidth - 225);
+                    //newX = 125 + random.nextInt((int) screenWidth - 225);
                     attempts++;
                 } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, null)) && attempts < 30);
 

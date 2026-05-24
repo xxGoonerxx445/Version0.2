@@ -38,10 +38,7 @@ public class Hook extends Base{
         return false;
 
     }
-    public boolean GetMode()
-    {
-        return Active;
-    }
+
     public void Activate()
     {this.Active=true;}
     public boolean isHooking(Ball b)

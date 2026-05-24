@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 /**
  * מחלקת Singleton לניהול הקשר עם Firebase Database.
  * משמשת לריכוז פעולות הכתיבה והקריאה מהמסד נתונים.
+ * אחראית על הגדרות ראשוניות של המשתמש
  */
 public class FBsingleton {
     private static FBsingleton instance;
@@ -43,7 +44,7 @@ public class FBsingleton {
             myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/score");
             // שמירת הערך
             myRef.setValue(0);*/
-            DatabaseReference myRef = database.getReference("records/" + FirebaseAuth.getInstance().getUid());
+            DatabaseReference myRef = database.getReference("records/" + FirebaseAuth.getInstance().getUid()); //creates the path if it doesn't exist yet
             Record record = new Record(name, 0);
             myRef.setValue(record);
 

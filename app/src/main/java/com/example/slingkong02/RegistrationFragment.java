@@ -57,7 +57,7 @@ public class RegistrationFragment extends Fragment {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password) //create new user, give it a random uid
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // Save name to database
