@@ -26,7 +26,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) //runs automatically when the RecyclerView needs to display a new item
     {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -35,8 +35,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
-        // read eachtime from arraylist object and write to listview Item
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) { //
+        // reads eachtime from the  arraylist object and writes to the listview Item
+
         //getting the record of the specified position
         Record record = recordsList.get(position);
 
@@ -60,7 +61,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // TODO:
+            //initializing our views with their ids
             tvName = itemView.findViewById(R.id.tvName);
             tvRecord = itemView.findViewById(R.id.tvScore);
         }

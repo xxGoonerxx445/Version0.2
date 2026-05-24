@@ -27,6 +27,8 @@ public class LoginFragment extends Fragment {
 
     public LoginFragment() {
         // בנאי ריק נדרש עבור Fragments
+        // Android requires an empty public constructor to recreate
+        // the fragment automatically (e.g. on screen rotation)
     }
 
     @Override

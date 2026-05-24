@@ -23,19 +23,21 @@ public class RegistrationFragment extends Fragment {
 
     public RegistrationFragment() {
         // Required empty public constructor
+        // Android requires an empty public constructor to recreate
+        // the fragment automatically (e.g. on screen rotation)
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_registration, container, false);
+        return inflater.inflate(R.layout.fragment_registration, container, false); //creates and returns the visual layout
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); //initialize firebase authentication
 
         etEmail = view.findViewById(R.id.etEmailAddress);
         etPassword = view.findViewById(R.id.etNumberPassword);

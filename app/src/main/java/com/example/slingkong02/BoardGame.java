@@ -123,7 +123,7 @@ public class BoardGame extends View {
         return Score;
     }
 
-    @Override
+    @Override // stretch the background image to fill the entire screen , exists because in the constructor the screen size is not known yet.
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         destRect = new Rect(0, 0, w, h);
@@ -135,7 +135,7 @@ public class BoardGame extends View {
         if (destRect != null) {
             canvas.drawBitmap(BackGround, null, destRect, null);
         } else {
-            canvas.drawBitmap(BackGround, 0, 0, null);
+            canvas.drawBitmap(BackGround, 0, 0, null); // fallback if size not known yet to prevent crash
         }
         b.draw(canvas);
         GM.ShowScore(canvas, p3, Score);

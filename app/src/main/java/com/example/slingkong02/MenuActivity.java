@@ -35,7 +35,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 BoardGame bg = new BoardGame(MenuActivity.this);
-                setContentView(bg);
+                setContentView(bg); //set the view to boardgame
             }
         });
         LogOutbtn.setOnClickListener(new View.OnClickListener() {
