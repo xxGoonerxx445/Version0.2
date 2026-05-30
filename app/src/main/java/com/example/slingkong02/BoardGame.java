@@ -188,6 +188,12 @@ public class BoardGame extends View {
         return true;
     }
 
+    @Override // Called automatically by Android when the View is removed from the screen
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow(); // Run Android's built-in cleanup for this View
+        threadGame.interrupt(); // Stop the game thread so it doesn't keep running in the background
+    }
+
     private class ThreadGame extends Thread {
         @Override
         public void run() {
@@ -213,4 +219,9 @@ public class BoardGame extends View {
         F = false;
         invalidate();
     }
+
 }
+
+
+
+

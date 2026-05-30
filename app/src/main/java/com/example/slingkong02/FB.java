@@ -78,7 +78,7 @@ public class FB {
 
                         // 3. Update if new score is better
                         if (existingScore == null || newScore > existingScore) {
-                            Record newRecord = new Record(finalName, newScore);
+                            Record newRecord = new Record(finalName, newScore); //thats why need also need to take the name at the beginning
                             recordRef.setValue(newRecord);
                         }
                     }
