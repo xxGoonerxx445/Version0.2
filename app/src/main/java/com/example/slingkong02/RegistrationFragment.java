@@ -37,7 +37,7 @@ public class RegistrationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAuth = FirebaseAuth.getInstance(); //initialize firebase authentication
+        mAuth = FirebaseAuth.getInstance(); //initialize firebase authentication!
 
         etEmail = view.findViewById(R.id.etEmailAddress);
         etPassword = view.findViewById(R.id.etNumberPassword);
@@ -59,7 +59,7 @@ public class RegistrationFragment extends Fragment {
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password) //create new user, give it a random uid
+        mAuth.createUserWithEmailAndPassword(email, password) //create new user, give it a random uid //auth is only mail and pw (firebase auth)
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // Save name to database

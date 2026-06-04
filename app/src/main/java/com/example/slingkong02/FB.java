@@ -62,8 +62,9 @@ public class FB {
 
         // 1. Get user name from database
         database.getReference("records").child(uid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            //Initial Data Retrieval
             @Override
-            public void onDataChange(@NonNull DataSnapshot nameSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot nameSnapshot) { //to deliver the data to the app
                 String userName = nameSnapshot.getValue(String.class);
                 if (userName == null) userName = "Player";
 

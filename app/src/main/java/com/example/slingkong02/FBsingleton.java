@@ -37,14 +37,7 @@ public class FBsingleton {
     public void setName(String name) { //נקראת רק במעמד ההרשמה של משתמש חדש.
         // בדיקה שיש משתמש מחובר לפני ניסיון כתיבה
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            // יצירת נתיב בתוך ה-Database תחת users -> UID -> name
-            //DatabaseReference myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/name");
-            // שמירת הערך
-           /* myRef.setValue(name);
-            myRef = database.getReference("users/" + FirebaseAuth.getInstance().getUid() + "/score");
-            // שמירת הערך
-            myRef.setValue(0);*/
-            DatabaseReference myRef = database.getReference("records/" + FirebaseAuth.getInstance().getUid()); //creates the path if it doesn't exist yet
+            DatabaseReference myRef = database.getReference("records/" + FirebaseAuth.getInstance().getUid()); //creates the path if it doesn't exist yet (all ready exists)
             Record record = new Record(name, 0);
             myRef.setValue(record);
 

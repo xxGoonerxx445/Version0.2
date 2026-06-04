@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() { //אם המשתמש כבר התחבר בעבר אז במקום לדרוש ממנו להתחבר מחדש יש להעביר אותו לתפריט של המשחק
+    protected void onStart() { //אם המשתמש כבר התחבר בעבר אז במקום לדרוש ממנו להתחבר מחדש  להעביר אותו לתפריט של המשחק
         super.onStart();
         // בדיקה אם המשתמש מחובר
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();

@@ -43,7 +43,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // 1. אתחול מופע ה-FirebaseAuth
-        mAuth = FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance(); //gets a reference to the Firebase Authentication service
 
         // 2. קישור רכיבי הממשק (UI) מה-XML לקוד ה-Java
         etEmail = view.findViewById(R.id.etEmailAddress);
@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
      * פונקציה המבצעת את תהליך ההתחברות מול Firebase.
      */
     private void performLogin() {
-        String email = etEmail.getText().toString().trim();
+        String email = etEmail.getText().toString().trim(); //trim מנקה את הסטרינג מרווחים מיותרים
         String password = etPassword.getText().toString().trim();
 
         // בדיקה בסיסית שכל השדות מולאו
@@ -70,7 +70,7 @@ public class LoginFragment extends Fragment {
 
         // ביצוע התחברות באמצעות אימייל וסיסמה
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(requireActivity(), task -> {
+                .addOnCompleteListener(requireActivity(), task -> { //task after login finishes (fail or success )
                     if (task.isSuccessful()) {
                         // התחברות הצליחה! מעבר למסך התפריט הראשי
                         Intent intent = new Intent(getActivity(), MenuActivity.class);
