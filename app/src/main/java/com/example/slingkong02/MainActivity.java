@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     private TabLayout tabLayout;
-    public static ArrayList<Record> records;
+    public static ArrayList<Record> records; //סטטי בשביל שלא יצטרכי instance לגשת אליו
     FB fb;
 
 

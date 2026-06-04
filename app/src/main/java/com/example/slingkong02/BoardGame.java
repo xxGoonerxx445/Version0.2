@@ -69,7 +69,7 @@ public class BoardGame extends View {
                 if (isDialogShown) return true;
 
                 if (!F) {
-                    if (WasFirstDrag) b.applyGravity();
+                    if (    WasFirstDrag) b.applyGravity();
                     b.move();
 
                     //  פונקציית הגלילה
