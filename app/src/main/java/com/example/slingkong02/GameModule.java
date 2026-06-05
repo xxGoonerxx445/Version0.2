@@ -24,7 +24,8 @@ public class GameModule {
         float currentY = height - 500;
         for (int i = 0; i < 6; i++) {
             //float x = 125 + random.nextInt((int) width - 225); og
-            float x = 100 + random.nextInt((int) width - 255);
+            //float x = 100 + random.nextInt((int) width - 255);
+            float x=150 + random.nextInt((int) width - 300); //new
             Hooks.add(new Hook(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200); //מספר רנדומלי שהוא הערך הקיים פחות (300 ועוד מספר רנדומלי בין 0 ל200)
         }
@@ -159,7 +160,8 @@ public class GameModule {
                 // Check against existing hooks and saws to ensure safe placement
                 do {
                     //newX = 50 + random.nextInt((int) screenWidth - 225);
-                    newX = 100 + random.nextInt((int) screenWidth -255); //so not too close to edges
+                    //newX = 100 + random.nextInt((int) screenWidth -255); //so not too close to edges
+                    newX=150 + random.nextInt((int) screenWidth - 300);
                     attempts++;
                 } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, null)) && attempts < 30);
 
