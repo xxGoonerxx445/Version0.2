@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     private TabLayout tabLayout;
-    public static ArrayList<Record> records; //סטטי בשביל שלא יצטרכי instance לגשת אליו
+    public static ArrayList<Record> records; //סטטי ציבורי בשביל שלא יצטרכי instance לגשת אליו
     FB fb;
 
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 if (fragment != null) {
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.frameLayout, fragment)
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN) //animation
                             .commit();
                 }
             }
@@ -76,10 +76,8 @@ public class MainActivity extends AppCompatActivity {
     }
     private void initialization() {
         // initialize the records arraylist
-        //load the actual "records" data from Firebase using the FB instance.
-
         records = new ArrayList<>();
-        fb = FB.getInstance();
+        fb = FB.getInstance(); // to initialize and activate the high score listening mechanism. and populates the records arraylist with the top 10 scores.
     }
 
     private void moveToMenu() {

@@ -39,6 +39,7 @@ public class GameModule {
             int attempts = 0;
             // Check against hooks AND already-placed saws
             do {
+                //100 200 og
                 x = 100 + random.nextInt((int) width - 200);
                 attempts++;
             } while ((isTooCloseToAnyHook(x, currentY) || isTooCloseToAnySaw(x, currentY, null)) && attempts < 30); //When placing saws for the first time, there is no saw being repositioned — we're creating brand new ones. So null is passed, and since no saw equals null, nothing gets skipped and all existing saws are checked normally.
@@ -158,7 +159,7 @@ public class GameModule {
                 // Check against existing hooks and saws to ensure safe placement
                 do {
                     //newX = 50 + random.nextInt((int) screenWidth - 225);
-                    newX = 130 + random.nextInt((int) screenWidth - 225);
+                    newX = 200 + random.nextInt((int) screenWidth -225); //so not too close to edges
                     attempts++;
                 } while ((isTooCloseToAnyHook(newX, newY) || isTooCloseToAnySaw(newX, newY, null)) && attempts < 30);
 

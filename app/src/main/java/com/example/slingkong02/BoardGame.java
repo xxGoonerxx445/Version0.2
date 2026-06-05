@@ -22,7 +22,7 @@ public class BoardGame extends View {
     private boolean isDialogShown = false;
     private Handler animationHandler;
     private ThreadGame threadGame = new ThreadGame();
-    private Paint p, p2, p3;
+    private Paint  p2, p3; //p2=hook color p3=score color
     private float dx, dy;
     private boolean F, WasFirstDrag = false; //דגל המציין האם השחקן נמצא כרגע בתהליך של מתיחת הדמות (Dragging).
     private float startX, startY;
@@ -45,9 +45,8 @@ public class BoardGame extends View {
         height = ds.heightPixels;
         Toast.makeText(context, "width=" + width + " height=" + height, Toast.LENGTH_LONG).show();
 
-        p = new Paint();
-        p.setColor(Color.BLUE);
-        b = new Ball(width / 2, height -301, 0, 0, 75, monkeyBitmap); //here
+
+        b = new Ball(width / 2, height -250, 0, 0, 75, monkeyBitmap); //here
 
         p2 = new Paint();
         p2.setColor(Color.parseColor("#65442E"));
@@ -80,7 +79,7 @@ public class BoardGame extends View {
                         F = true;
 
                     }
-                    if(GM.isCollideSaws(b))// TODO: 3/25/2026 check collison with saws
+                    if(GM.isCollideSaws(b))//
                     {
                         F=true;
                         b.SetDeath();
@@ -121,7 +120,7 @@ public class BoardGame extends View {
 
     public int getScore() {
         return Score;
-    }
+    } //for the custom dialog to use
 
     @Override // stretch the background image to fill the entire screen , exists because in the constructor the screen size is not known yet.
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -151,7 +150,6 @@ public class BoardGame extends View {
                 if (b.didusertouch(event.getX(), event.getY()) && (b.isHooked() || !WasFirstDrag)) {
                     b.setHooked(false);
                     F = true;
-                    //startX = b.GetX();
                     startX=b.getX();
                     startY = b.getY();
                 }
@@ -213,7 +211,7 @@ public class BoardGame extends View {
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(sawBitmap, width, height);
         Score = 0;
-        b = new Ball(width / 2, height - 200, 0, 0, 75, monkeyBitmap);
+        b = new Ball(width / 2, height - 250, 0, 0, 75, monkeyBitmap);
         isDialogShown = false;
         WasFirstDrag = false;
         F = false;
