@@ -38,7 +38,7 @@ public class FB {
                 MainActivity.records.clear(); //מנקה בשביל לסדר מחדש ולמנוע שכפולים
                 //Loops through each record in the snapshot, converts it to a Record object, and inserts it at position 0 (the top of the list) so the highest scores appear first.
                 for(DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    Record currentRecord = userSnapshot.getValue(Record.class);
+                    Record currentRecord = userSnapshot.getValue(Record.class); //firebase creates empty record with empty constructor
                     if (currentRecord != null) {
                         MainActivity.records.add(0, currentRecord); //changes it to be highest to lowest
 

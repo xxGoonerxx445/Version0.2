@@ -36,17 +36,17 @@ public class BoardGame extends View {
     private int width, height;
 
     public BoardGame(Context context) {
-        super(context);
+        super(context); //initialize the view
         BackGround = BitmapFactory.decodeResource(getResources(), R.drawable.bgimage);
         sawBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icons8sawblade96);
         monkeyBitmap=BitmapFactory.decodeResource(getResources(), R.drawable.monkey);
         DisplayMetrics ds = getResources().getDisplayMetrics();
         width = ds.widthPixels;
         height = ds.heightPixels;
-        Toast.makeText(context, "width=" + width + " height=" + height, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, "width=" + width + " height=" + height, Toast.LENGTH_LONG).show();
 
 
-        b = new Ball(width / 2, height -250, 0, 0, 75, monkeyBitmap); //here
+        b = new Ball(width / 2, height -250, 0, 0, 75, monkeyBitmap);
 
         p2 = new Paint();
         p2.setColor(Color.parseColor("#65442E"));
@@ -122,10 +122,10 @@ public class BoardGame extends View {
         return Score;
     } //for the custom dialog to use
 
-    @Override // stretch the background image to fill the entire screen , exists because in the constructor the screen size is not known yet.
+    @Override // stretch the background image to fill the entire screen.
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        destRect = new Rect(0, 0, w, h);
+        destRect = new Rect(0, 0, w, h); //w and h are the bottom right coordinates of the view
     }
 
     @Override
@@ -176,6 +176,7 @@ public class BoardGame extends View {
                     // the velocity calculation  matches the visual drag distance.
                     b.setDx(-(touchX_ENDOFMOVMENT - startX) / 10f);
                     b.setDy(-(touchY_ENDOFMOVMENT - startY) / 10f);
+                    //Toast.makeText(getContext(), "dy="+b.GetDy(), Toast.LENGTH_SHORT).show();
 
 
                     F = false;
@@ -198,7 +199,7 @@ public class BoardGame extends View {
             while (!isInterrupted()) {
                 try {
                     sleep(16);
-                    animationHandler.sendEmptyMessage(0);
+                    animationHandler.sendEmptyMessage(0); // Send a message to the handler to update the view
                 } catch (InterruptedException e) {
                     break;
                 }

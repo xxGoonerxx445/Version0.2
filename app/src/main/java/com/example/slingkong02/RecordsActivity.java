@@ -35,6 +35,6 @@ public class RecordsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this)); // to be vertical
 
         adapter = new RecordAdapter(this, MainActivity.records);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);  // enables the RecyclerView to interact with the adapter
     }
 }

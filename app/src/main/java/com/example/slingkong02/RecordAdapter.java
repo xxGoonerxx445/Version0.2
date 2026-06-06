@@ -24,18 +24,20 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
         this.recordsList = recordsList;
     }
 
+
+    //runs automatically when the RecyclerView needs to display a new item/This runs only when a new row needs to be created.
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) //runs automatically when the RecyclerView needs to display a new item
+    public UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) //builds an empty row
     {
         //inflating and returning our view holder
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.custom_layout, null);
+        View view = inflater.inflate(R.layout.custom_layout, null); // The 'null' parameter means it's not attached to the parent yet; RecyclerView handles that.
         return new UserViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) { //
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) { //fills a row with data
         // reads eachtime from the  arraylist object and writes to the listview Item
 
         //getting the record of the specified position
@@ -45,7 +47,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
         holder.tvName.setText(record.getName());
 
         // convert int to String by:  ""+int
-        holder.tvRecord.setText(""+record.getScore());
+        holder.tvRecord.setText(""+record.getScore()); //setText accepts only strings
 
     }
 
@@ -55,11 +57,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.UserViewHo
     }
 
 
-    public class UserViewHolder extends RecyclerView.ViewHolder{
+    public class UserViewHolder extends RecyclerView.ViewHolder{ //container that holds references to the views inside one row
         TextView tvName, tvRecord;
 
         public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
+            super(itemView); //the whole row layout (which is the inflated custom_layout)
 
             //initializing our views with their ids
             tvName = itemView.findViewById(R.id.tvName);

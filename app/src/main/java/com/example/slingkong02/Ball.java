@@ -13,7 +13,7 @@ public class Ball extends Base {
     private boolean Death=false;
     private boolean hooked = false;
     private final RectF rect = new RectF();
-    private Paint paint;
+
 
     public Ball(float x, float y, float dx, float dy, float radius, Bitmap bitmap) {
         super(x, y);
@@ -38,20 +38,16 @@ public class Ball extends Base {
     @Override
     public void draw(Canvas canvas) {
         if (bitmap != null) {
-            // עדכון הערכים של האובייקט הקיים במקום יצירת חדש
+
             rect.set(x - radius, y - radius, x + radius, y + radius);
             canvas.drawBitmap(bitmap, null, rect, null);
         }
     }
 
 
-    public float GetDx() { return dx; }
-    //public float GetDy() { return dy; }
-
-
     public void move() {
-        x = x + dx;
-        y = y + dy;
+        x = x + dx; //adds x to the dx every frame
+        y = y + dy; //adds y to the dy every frame
     }
 
     public void applyGravity() {
@@ -80,11 +76,6 @@ public class Ball extends Base {
         if (x - radius <= 0 || x + radius >= screenWidth) {
             dx = -dx;
         }
-        /*if (y + radius >= screenHeight) {
-            dy = -dy * 0.02f; // Bounce with some energy loss
-            //dy = -dy;
-            y = screenHeight - radius;
-        }*/
     }
     public boolean isDeath()
     {
