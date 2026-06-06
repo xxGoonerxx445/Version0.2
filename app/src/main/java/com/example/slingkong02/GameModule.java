@@ -23,8 +23,7 @@ public class GameModule {
         Hooks.clear();
         float currentY = height - 500;
         for (int i = 0; i < 6; i++) {
-            //float x = 125 + random.nextInt((int) width - 225); og
-            //float x = 100 + random.nextInt((int) width - 255);
+
             float x=150 + random.nextInt((int) width - 300); //new
             Hooks.add(new Hook(x, currentY, 75, p));
             currentY -= 300 + random.nextInt(200); //מספר רנדומלי שהוא הערך הקיים פחות (300 ועוד מספר רנדומלי בין 0 ל200)
@@ -39,7 +38,7 @@ public class GameModule {
             float x;
             int attempts = 0;
             // Check against hooks AND already-placed saws
-            do {
+            do { //do while בגלל שזה יוצא קצת יותר קצר ומקצועי
                 //100 200 og
                 x = 100 + random.nextInt((int) width - 200);
                 attempts++;
@@ -66,7 +65,7 @@ public class GameModule {
      * The heart of the scrolling logic.
      * If the ball goes above 40% of the screen, we move the world down instead.
      */
-    public void updateScrolling(Ball b, float screenHeight) {
+    public void updateScrolling(Ball b, float screenHeight) { //the ball does not actually go over the 40% line of the screen.
         float scrollThreshold = screenHeight * 0.4f; // Top 40% of screen
 
         if (b.getY() < scrollThreshold) {

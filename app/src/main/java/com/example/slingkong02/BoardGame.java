@@ -62,7 +62,7 @@ public class BoardGame extends View {
         GM.initDefaultHooks(p2, width, height);
         GM.initDefaultSaws(sawBitmap, width, height);
 
-        animationHandler = new Handler(new Handler.Callback() {
+        animationHandler = new Handler(new Handler.Callback() { //the Handler must be created on the UI (main) thread.
             @Override
             public boolean handleMessage(@NonNull android.os.Message msg) {
                 if (isDialogShown) return true;
@@ -176,8 +176,8 @@ public class BoardGame extends View {
                     // the velocity calculation  matches the visual drag distance.
                     b.setDx(-(touchX_ENDOFMOVMENT - startX) / 10f);
                     b.setDy(-(touchY_ENDOFMOVMENT - startY) / 10f);
-                    //Toast.makeText(getContext(), "dy="+b.GetDy(), Toast.LENGTH_SHORT).show();
 
+                    //Toast.makeText(getContext(), "dy="+b.GetDy(), Toast.LENGTH_SHORT).show();
 
                     F = false;
                     WasFirstDrag = true;
@@ -201,7 +201,9 @@ public class BoardGame extends View {
                     sleep(16);
                     animationHandler.sendEmptyMessage(0); // Send a message to the handler to update the view "ticks"
                 } catch (InterruptedException e) {
+
                     break;
+
                 }
             }
         }

@@ -63,7 +63,7 @@ public class RegistrationFragment extends Fragment {
                 .addOnCompleteListener(requireActivity(), task -> {
                     if (task.isSuccessful()) {
                         // Save name to database
-                        FBsingleton.getInstance().setName(name);
+                        FBsingleton.getInstance().setName(name); //here
 
                         Toast.makeText(getContext(), "Registration Successful!", Toast.LENGTH_SHORT).show();
 
