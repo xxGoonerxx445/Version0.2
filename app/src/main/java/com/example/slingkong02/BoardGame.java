@@ -199,7 +199,7 @@ public class BoardGame extends View {
             while (!isInterrupted()) {
                 try {
                     sleep(16);
-                    animationHandler.sendEmptyMessage(0); // Send a message to the handler to update the view
+                    animationHandler.sendEmptyMessage(0); // Send a message to the handler to update the view "ticks"
                 } catch (InterruptedException e) {
                     break;
                 }

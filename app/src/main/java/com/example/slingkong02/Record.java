@@ -12,6 +12,7 @@ public class Record {
     // MUST have the constructor  for the FireBase
     //משתמשים בבנאי הריק הזה  ובעזרת קוד ב FB יוצרים אובייקט record
     public Record() {
+
     }
 
     // MUST generate getters and setters for the FireBase
