@@ -66,7 +66,7 @@ public class FB {
             @Override
             public void onDataChange(@NonNull DataSnapshot nameSnapshot) { //to deliver the data to the app
                 String userName = nameSnapshot.getValue(String.class);
-                if (userName == null) userName = "Player";
+                if (userName == null) userName = "Player"; //למקרה שמשהו השתבש ואין שם
 
                 final String finalName = userName;
                 DatabaseReference recordRef = database.getReference("records").child(uid);
